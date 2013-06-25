@@ -12,7 +12,7 @@ var express = require('express')
   , LocalStrategy = require('passport-local').Strategy;
 
 app.set('views', __dirname + '/views');
-//app.set('view engine', 'jade');
+app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(express.logger());
 app.use(express.bodyParser());

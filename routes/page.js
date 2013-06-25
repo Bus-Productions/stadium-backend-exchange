@@ -6,5 +6,5 @@
 
 // Index page
 exports.index = function(req, res){
-  res.send("It works!");
+  res.render("index", { intro: "It works!" });
 }
