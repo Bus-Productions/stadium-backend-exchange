@@ -7,7 +7,7 @@ Exchange for the Stadium Product
 >npm install
 >
 >node server.js
->
->Development environment uses port 4200
->
->/healthcheck for env dump
+
+Development environment uses port 4200
+
+/healthcheck for env dump
