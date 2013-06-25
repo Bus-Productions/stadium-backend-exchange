@@ -12,7 +12,7 @@ exports.config = function(){
       dbhost: 'localhost',
       dbport: 5432,
       host: 'localhost',
-      port: 420,
+      port: 4200,
       method: 'POST'
     };
   } else if (env == "staging"){
