@@ -5,7 +5,6 @@ var sequelize = new Sequelize(GAME.config.dbname, GAME.config.dbuser, GAME.confi
   protocol: 'postgres',
   dialect:'postgres'
 });
-var chainer = new Sequelize.Utils.QueryChainer;
 
 var Symbol = require("./symbol")(sequelize, Sequelize);
 
