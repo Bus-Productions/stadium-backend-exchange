@@ -12,7 +12,7 @@ var express = require('express')
   , LocalStrategy = require('passport-local').Strategy;
 
 app.set('views', __dirname + '/views');
-app.set('view engine', 'jade');
+//app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
 app.use(express.logger());
 app.use(express.bodyParser());
@@ -31,7 +31,7 @@ GAME.config = require('./config/config.js').config();
 GAME.db = require('./models/models.js');
 
 // load auth schemes
-var auth = require('./lib/auth');
+//var auth = require('./lib/auth');
 
 // load routes
 var page = require('./routes/page'),
