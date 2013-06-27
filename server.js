@@ -44,6 +44,7 @@ app.get('/', page.index);
 
 // bid routes
 app.post('/bid', bid.create_bid);
+app.get('/bid/:order_id', bid.bid_status);
 
 
 // utility routes
