@@ -1,4 +1,4 @@
-var env = process.env.GAME_ENV || "development";
+var env = process.env.NODE_ENV || "development";
 
 console.log("Using the "+ env + " environment");
 
@@ -13,6 +13,18 @@ exports.config = function(){
       dbport: 5432,
       host: 'localhost',
       port: 4200,
+      method: 'POST'
+    };
+  } else if (env == "test"){
+    return {
+      env: 'test',
+      dbname: 'stadium_exchange_test',
+      dbuser: 'stadium_exchange',
+      dbpass: 'game2013',
+      dbhost: 'localhost',
+      dbport: 5432,
+      host: 'localhost',
+      port: 3000,
       method: 'POST'
     };
   } else if (env == "staging"){
