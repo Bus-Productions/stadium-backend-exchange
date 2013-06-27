@@ -21,7 +21,7 @@ var report_error = function(err, res, done) {
     console.log(res.body);
     return done(err);
   } else {
-  done()
+    done()
   }
 }
 
