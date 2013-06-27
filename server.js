@@ -43,6 +43,7 @@ var page = require('./routes/page'),
 app.get('/', page.index);
 
 // bid routes
+app.post('/bid', bid.create_bid);
 
 
 // utility routes

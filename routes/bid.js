@@ -14,7 +14,7 @@ exports.create_bid = function(req, res){
       quantity: p.quantity,
       buyer: p.buyer
     }).success(function(bid){
-      res.send(bid);
+      res.send(201, bid);
     });
   } else {
     res.send(400);

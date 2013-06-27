@@ -25,7 +25,7 @@ describe("Bid", function() {
       .expect(201, done)
   });
 
-  it('get a bid', function(done) {
+  it('can get a bid', function(done) {
     api.get("/bid/1")
       .expect(200, done)
   });
