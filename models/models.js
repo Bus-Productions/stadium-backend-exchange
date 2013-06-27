@@ -26,6 +26,8 @@ Call.belongsTo(Phonenumber);
 */
 
 exports.Symbol = Symbol;
+exports.Bid = Bid;
+exports.Ask = Ask;
 
 sequelize.sync().success(function(){
   console.log("DB Synced");

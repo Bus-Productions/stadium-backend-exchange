@@ -35,10 +35,15 @@ GAME.db = require('./models/models.js');
 
 // load routes
 var page = require('./routes/page'),
+    bid = require('./routes/bid'),
+    //ask = require('./routes/ask'),
     util = require('./routes/util');
 
 
 app.get('/', page.index);
+
+// bid routes
+
 
 // utility routes
 app.get('/healthcheck', util.healthcheck);
