@@ -17,7 +17,12 @@ exports.create_bid = function(req, res){
       res.send(201, bid.values);
     });
   } else {
-    res.send(400);
+    var emessage = 'You did not send the following parameters: ';
+    if (!p.symbol) emessage += ' symbol ';
+    if (!p.price) emessage += ' price ';
+    if (!p.quantity) emessage += ' quantity ';
+    if (!p.buyer) emessage += ' buyer ';
+    res.send(400, emessage);
   }
 }
 
