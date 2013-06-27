@@ -7,6 +7,7 @@ var sequelize = new Sequelize(GAME.config.dbname, GAME.config.dbuser, GAME.confi
 });
 
 var Symbol = require("./symbol")(sequelize, Sequelize);
+var Bid = require("./bid")(sequelize, Sequelize);
 
 /*
 User
