@@ -19,5 +19,11 @@
     "pg": "0.12.x",
     "sequelize": "1.6.x",
     "socket.io": "0.9.x"
+  },
+  "devDependencies": {
+      "mocha": "1.11.0",
+      "chai": "1.7.2",
+      "should": "1.2.2",
+      "supertest": "0.7.x"
   }
 }
