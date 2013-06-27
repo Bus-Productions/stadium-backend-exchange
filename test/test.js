@@ -16,12 +16,13 @@ describe("Index", function() {
   });
 });
 
-var report_error = function(err, res) {
+var report_error = function(err, res, done) {
   if (err) {
     console.log(res.body);
     return done(err);
-  }
+  } else {
   done()
+  }
 }
 
 describe("Bid", function() {
@@ -30,13 +31,17 @@ describe("Bid", function() {
     //tock Ticker Symbol, Bid Amount, Bid Quantity, Buyer ID
       .send({ symbol: 'AAA', price: 100.0, quantity: 100, buyer: 'Mr White' })
       .expect(201)
-      .end(report_error)
+      .end(function(err, res){
+        report_error(err, res, done)
+      })
   });
 
   it('can get a bid', function(done) {
     api.get("/bid/1")
       .expect(200)
-      .end(report_error)
+      .end(function(err, res){
+        report_error(err, res, done)
+      })
   });
 
   describe('failure scenarios', function() {
@@ -44,25 +49,33 @@ describe("Bid", function() {
       api.post('/bid')
         .send({ symbol: 'AAA', price: 100.0, buyer: 'Mr White' })
         .expect(400)
-        .end(report_error)
+        .end(function(err, res){
+          report_error(err, res, done)
+        })
     });
     it('needs a bid symbol', function(done) {
       api.post('/bid')
         .send({ quantity: 100, price: 100.0, buyer: 'Mr White' })
         .expect(400)
-        .end(report_error)
+        .end(function(err, res){
+          report_error(err, res, done)
+        })
     });
     it('needs a bid price', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', quantity: 100, buyer: 'Mr White' })
         .expect(400)
-        .end(report_error)
+        .end(function(err, res){
+          report_error(err, res, done)
+        })
     });
     it('needs a bid buyer', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', price: 100.0, quantity: 100 })
         .expect(400)
-        .end(report_error)
+        .end(function(err, res){
+          report_error(err, res, done)
+        })
     });
   });
 });
