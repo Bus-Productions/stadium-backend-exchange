@@ -3,9 +3,9 @@
 
 var express = require('express')
   , app = express()
-  , server = require('http').createServer(app)
-  , io = require('socket.io').listen(server)
-  , http = require('http')
+//  , server = require('http').createServer(app)
+//  , io = require('socket.io').listen(server)
+//  , http = require('http')
   , passport = require('passport')
   , passwordHash = require('password-hash')
   , flash = require('connect-flash')
@@ -44,4 +44,4 @@ app.get('/', page.index);
 app.get('/healthcheck', util.healthcheck);
 
 
-server.listen(GAME.config.port);
+app.listen(GAME.config.port);
