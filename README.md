@@ -20,19 +20,7 @@ Development environment uses port 4200
 ./init_db.sh
 ```
 
-1. Then start the node application using the following line
-```
-make server
-```
-
-1. Then in another shell, run the tests!
+1. Run the tests!
 ```
 make test
 ```
-
-1. Then clean up the database:
-```
-make clean
-```
-
-1. Stop the server (in the shell where the server is running) and start from the beginning:
