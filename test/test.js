@@ -71,9 +71,12 @@ describe("Bid", function() {
 
   it('can get a bid', function(done) {
     api.get("/bid/1")
-      .expect(200)
-      .end(function(err, res){
-        console.log(err);
+      .expect(200, function(err, res){
+        res.body.symbol.should.equal('AAA');
+        res.body.price.should.equal(100);
+        res.body.quantity.should.equal(100);
+        res.body.buyer.should.equal('Mr White');
+        res.body.id.should.equal(1);
         report_error(err, res, done);
       });
   });
