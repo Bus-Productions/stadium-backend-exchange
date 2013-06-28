@@ -3,16 +3,16 @@ process.env.NODE_ENV = 'test';
 var should = require('chai').should(),
     supertest = require('supertest'),
     config = require('../config/config.js').config(),
+    app = require('../server'),
     api = supertest('http://localhost:3000');
 
-
-var Sequelize = require("sequelize");
-var sequelize = new Sequelize(config.dbname, config.dbuser, config.dbpass, {
-  host: config.dbhost,
-  port: config.dbport,
-  protocol: 'postgres',
-  dialect:'postgres'
-});
+//var Sequelize = require("sequelize");
+//var sequelize = new Sequelize(config.dbname, config.dbuser, config.dbpass, {
+//  host: config.dbhost,
+//  port: config.dbport,
+//  protocol: 'postgres',
+//  dialect:'postgres'
+//});
 
 // helpers
 var report_error = function(err, res, done) {
@@ -29,15 +29,15 @@ before(function() {
   console.log("Initializing the application");
 });
 
-after(function(done) {
-  sequelize.query('DELETE FROM "Bids"').success(function(myTableRows) {
-    console.log(myTableRows);
-    done();
-  })
-  .error(function(err) {
-    console.log(err);
-  });
-});
+//after(function(done) {
+//  sequelize.query('DELETE FROM "Bids"').success(function(myTableRows) {
+//    console.log(myTableRows);
+//    done();
+//  })
+//  .error(function(err) {
+//    console.log(err);
+//  });
+//});
 
 // *****
 // TESTS
