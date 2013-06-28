@@ -26,13 +26,11 @@ make server
 ```
 
 1. Then in another shell, run the tests!
-
 ```
 make test
 ```
 
 1. Then clean up the database:
-
 ```
 make clean
 ```
