@@ -51,9 +51,7 @@ describe("Index", function() {
         report_error(err,res,done);
       });
   });
-});
 
-describe("Index", function() {
   it('has a healthcheck', function(done) {
     api.get('/healthcheck')
       .expect(200, done);
@@ -74,9 +72,8 @@ describe("Bid", function() {
   it('can get a bid', function(done) {
     api.get("/bid/1")
       .expect(200)
-      //.expect('symbol','AAA')
       .end(function(err, res){
-        //console.log(res);
+        console.log(err);
         report_error(err, res, done);
       });
   });
