@@ -68,25 +68,33 @@ describe("Bid", function() {
       .expect(201)
       .end(function(err, res){
         report_error(err, res, done);
-      })
+      });
   });
 
   it('can get a bid', function(done) {
-    api.get("/bid/15")
+    api.get("/bid/1")
       .expect(200)
       .end(function(err, res){
         report_error(err, res, done);
-      })
+      });
   });
 
   describe('failure scenarios', function() {
+    it('needs to have a record associated with a bid', function(done) {
+      api.get('/bid/asdf')
+        .expect(404)
+        .end(function(err,res){
+          report_error(err, res, done);
+        });
+
+    });
     it('needs a bid quantity', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', price: 100.0, buyer: 'Mr White' })
         .expect(400, function(err, res){
           res.text.should.match(/quantity/);
           report_error(err, res, done);
-        })
+        });
     });
     it('needs a bid symbol', function(done) {
       api.post('/bid')
