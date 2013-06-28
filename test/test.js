@@ -68,15 +68,17 @@ describe("Bid", function() {
       .expect(201)
       .end(function(err, res){
         report_error(err, res, done);
-      })
+      });
   });
 
   it('can get a bid', function(done) {
-    api.get("/bid/15")
+    api.get("/bid/1")
       .expect(200)
+      .expect('symbol','AAA')
       .end(function(err, res){
+        console.log(res);
         report_error(err, res, done);
-      })
+      });
   });
 
   describe('failure scenarios', function() {
@@ -86,7 +88,7 @@ describe("Bid", function() {
         .expect(400, function(err, res){
           res.text.should.match(/quantity/);
           report_error(err, res, done);
-        })
+        });
     });
     it('needs a bid symbol', function(done) {
       api.post('/bid')
@@ -94,7 +96,7 @@ describe("Bid", function() {
         .expect(400, function(err, res){
           res.text.should.match(/symbol/);
           report_error(err, res, done);
-        })
+        });
     });
     it('needs a bid price', function(done) {
       api.post('/bid')
@@ -102,7 +104,7 @@ describe("Bid", function() {
         .expect(400, function(err, res){
           res.text.should.match(/price/);
           report_error(err, res, done);
-        })
+        });
     });
     it('needs a bid buyer', function(done) {
       api.post('/bid')
@@ -110,7 +112,7 @@ describe("Bid", function() {
         .expect(400, function(err, res){
           res.text.should.match(/buyer/);
           report_error(err, res, done);
-        })
+        });
     });
     it('needs a bid buyer and a symbol', function(done) {
       api.post('/bid')
@@ -119,7 +121,7 @@ describe("Bid", function() {
           res.text.should.match(/buyer/);
           res.text.should.match(/symbol/);
           report_error(err, res, done);
-        })
+        });
     });
   });
 });

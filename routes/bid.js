@@ -29,7 +29,11 @@ exports.create_bid = function(req, res){
 exports.bid_status = function(req, res){
   if (req.params.order_id){
     GAME.db.Bid.find(req.params.order_id).success(function(bid){
-      res.send(bid.values);
+      if (bid && bid.values){
+        res.send(200, bid.values);
+      } else {
+        res.send(404);
+      }
     });
   } else {
     res.send(400);
