@@ -1,6 +1,5 @@
 test: clean
 	NODE_ENV=test node_modules/.bin/mocha
-	psql -c 'DROP TABLE Bids' -d stadium_exchange_test
 
 server:
 	NODE_ENV=test node server.js

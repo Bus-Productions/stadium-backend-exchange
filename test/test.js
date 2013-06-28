@@ -74,21 +74,27 @@ describe("Bid", function() {
   it('can get a bid', function(done) {
     api.get("/bid/1")
       .expect(200)
-      .expect('symbol','AAA')
+      //.expect('symbol','AAA')
       .end(function(err, res){
-        console.log(res);
+        //console.log(res);
         report_error(err, res, done);
       });
   });
 
   describe('failure scenarios', function() {
     it('needs to have a record associated with a bid', function(done) {
-      api.get('/bid/asdf')
+      api.get('/bid/1223')
         .expect(404)
         .end(function(err,res){
           report_error(err, res, done);
         });
-
+    });
+    it('needs to have an integer value for order_id', function(done) {
+      api.get('/bid/asdf')
+        .expect(400)
+        .end(function(err,res){
+          report_error(err, res, done);
+        });
     });
     it('needs a bid quantity', function(done) {
       api.post('/bid')

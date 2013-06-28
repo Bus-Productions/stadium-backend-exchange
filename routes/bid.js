@@ -28,12 +28,14 @@ exports.create_bid = function(req, res){
 
 exports.bid_status = function(req, res){
   if (req.params.order_id){
-    GAME.db.Bid.find(req.params.order_id).success(function(bid){
+    GAME.db.Bid.find({where: {id: req.params.order_id}}).success(function(bid){
       if (bid && bid.values){
         res.send(200, bid.values);
       } else {
         res.send(404);
       }
+    }).error(function(err){
+      res.send(400, "Invalid Resource ID: "+err);
     });
   } else {
     res.send(400);
