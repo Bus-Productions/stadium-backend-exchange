@@ -4,9 +4,10 @@ stadium_exchange
 Exchange for the Stadium Product
 
 ### Install
->npm install
->
->node server.js
+```
+npm install
+node server.js
+```
 
 Development environment uses port 4200
 
@@ -14,19 +15,26 @@ Development environment uses port 4200
 
 ### Testing
 
-To run the tests, first start make sure that you have the databases installed:
+1. To run the tests, first start make sure that you have the databases installed. You only need to do this ONCE:
 ```
 ./init_db.sh
 ```
 
-Then start the node application using the following line
+1. Then start the node application using the following line
 ```
-NODE_ENV=test node server.js
+make server
 ```
 
-Then run the tests!
+1. Then in another shell, run the tests!
 
 ```
-npm install
-node_modules/.bin/mocha
+make test
 ```
+
+1. Then clean up the database:
+
+```
+make clean
+```
+
+1. Stop the server (in the shell where the server is running) and start from the beginning:
