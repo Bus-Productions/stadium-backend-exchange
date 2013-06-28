@@ -20,7 +20,7 @@ var report_error = function(err, res, done) {
     console.log(res.body);
     return done(err);
   } else {
-    done()
+    done();
   }
 }
 
@@ -56,7 +56,7 @@ describe("Index", function() {
 describe("Index", function() {
   it('has a healthcheck', function(done) {
     api.get('/healthcheck')
-      .expect(200, done)
+      .expect(200, done);
   });
 });
 
@@ -67,7 +67,7 @@ describe("Bid", function() {
       .send({ symbol: 'AAA', price: 100.0, quantity: 100, buyer: 'Mr White' })
       .expect(201)
       .end(function(err, res){
-        report_error(err, res, done)
+        report_error(err, res, done);
       })
   });
 
@@ -75,7 +75,7 @@ describe("Bid", function() {
     api.get("/bid/15")
       .expect(200)
       .end(function(err, res){
-        report_error(err, res, done)
+        report_error(err, res, done);
       })
   });
 
