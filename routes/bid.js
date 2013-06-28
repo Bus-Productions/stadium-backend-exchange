@@ -18,10 +18,10 @@ exports.create_bid = function(req, res){
     });
   } else {
     var emessage = 'You did not send the following parameters: ';
-    if (!p.symbol) emessage += ' symbol ';
-    if (!p.price) emessage += ' price ';
-    if (!p.quantity) emessage += ' quantity ';
-    if (!p.buyer) emessage += ' buyer ';
+    if (!p.symbol) emessage += 'symbol ';
+    if (!p.price) emessage += 'price ';
+    if (!p.quantity) emessage += 'quantity ';
+    if (!p.buyer) emessage += 'buyer';
     res.send(400, emessage);
   }
 }

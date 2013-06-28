@@ -48,33 +48,42 @@ describe("Bid", function() {
     it('needs a bid quantity', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', price: 100.0, buyer: 'Mr White' })
-        .expect(400)
-        .end(function(err, res){
-          report_error(err, res, done)
+        .expect(400, function(err, res){
+          res.text.should.match(/quantity/);
+          report_error(err, res, done);
         })
     });
     it('needs a bid symbol', function(done) {
       api.post('/bid')
         .send({ quantity: 100, price: 100.0, buyer: 'Mr White' })
-        .expect(400)
-        .end(function(err, res){
-          report_error(err, res, done)
+        .expect(400, function(err, res){
+          res.text.should.match(/symbol/);
+          report_error(err, res, done);
         })
     });
     it('needs a bid price', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', quantity: 100, buyer: 'Mr White' })
-        .expect(400)
-        .end(function(err, res){
-          report_error(err, res, done)
+        .expect(400, function(err, res){
+          res.text.should.match(/price/);
+          report_error(err, res, done);
         })
     });
     it('needs a bid buyer', function(done) {
       api.post('/bid')
         .send({ symbol: 'AAA', price: 100.0, quantity: 100 })
-        .expect(400)
-        .end(function(err, res){
-          report_error(err, res, done)
+        .expect(400, function(err, res){
+          res.text.should.match(/buyer/);
+          report_error(err, res, done);
+        })
+    });
+    it('needs a bid buyer and a symbol', function(done) {
+      api.post('/bid')
+        .send({ price: 100.0, quantity: 100 })
+        .expect(400, function(err, res){
+          res.text.should.match(/buyer/);
+          res.text.should.match(/symbol/);
+          report_error(err, res, done);
         })
     });
   });
