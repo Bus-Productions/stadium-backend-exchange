@@ -1,11 +1,55 @@
+process.env.NODE_ENV = 'test';
+
 var should = require('chai').should(),
     supertest = require('supertest'),
+    config = require('../config/config.js').config(),
     api = supertest('http://localhost:3000');
+
+
+var Sequelize = require("sequelize");
+var sequelize = new Sequelize(config.dbname, config.dbuser, config.dbpass, {
+  host: config.dbhost,
+  port: config.dbport,
+  protocol: 'postgres',
+  dialect:'postgres'
+});
+
+// helpers
+var report_error = function(err, res, done) {
+  if (err) {
+    console.log(res.body);
+    return done(err);
+  } else {
+    done()
+  }
+}
+
+// surrounds
+before(function() {
+  console.log("Initializing the application");
+});
+
+after(function(done) {
+  sequelize.query('DELETE FROM "Bids"').success(function(myTableRows) {
+    console.log(myTableRows);
+    done();
+  })
+  .error(function(err) {
+    console.log(err);
+  });
+});
+
+// *****
+// TESTS
+// *****
 
 describe("Index", function() {
   it('gets the index page', function(done) {
     api.get('/')
-      .expect(200, done)
+      .expect(200, function(err,res) {
+        console.log(res.body);
+        report_error(err,res,done);
+      });
   });
 });
 
@@ -15,15 +59,6 @@ describe("Index", function() {
       .expect(200, done)
   });
 });
-
-var report_error = function(err, res, done) {
-  if (err) {
-    console.log(res.body);
-    return done(err);
-  } else {
-    done()
-  }
-}
 
 describe("Bid", function() {
   it('can post a bid', function(done) {
@@ -37,7 +72,7 @@ describe("Bid", function() {
   });
 
   it('can get a bid', function(done) {
-    api.get("/bid/1")
+    api.get("/bid/15")
       .expect(200)
       .end(function(err, res){
         report_error(err, res, done)
