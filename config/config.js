@@ -6,6 +6,7 @@ exports.config = function(){
   if (env == "development"){
     return {
       env: 'development',
+      logging: true,
       dbname: 'stadium_exchange',
       dbuser: 'stadium_exchange',
       dbpass: 'game2013',
@@ -18,6 +19,7 @@ exports.config = function(){
   } else if (env == "test"){
     return {
       env: 'test',
+      logging: false,
       dbname: 'stadium_exchange_test',
       dbuser: 'stadium_exchange',
       dbpass: 'game2013',
@@ -30,6 +32,7 @@ exports.config = function(){
   } else if (env == "staging"){
     return {
       env: 'staging',
+      logging: true,
       dbname: 'stadium_exchange',
       dbuser: 'stadium_exchange',
       dbpass: 'game2013',
@@ -42,6 +45,7 @@ exports.config = function(){
   } else if (env == "production"){
     return {
       env: 'production',
+      logging: true,
       dbname: 'stadium_exchange',
       dbuser: 'stadium_exchange',
       dbpass: 'game2013',
