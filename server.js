@@ -3,13 +3,10 @@
 
 var express = require('express')
   , app = express()
-//  , server = require('http').createServer(app)
-//  , io = require('socket.io').listen(server)
-//  , http = require('http')
-  , passport = require('passport')
-  , passwordHash = require('password-hash')
-  , flash = require('connect-flash')
-  , LocalStrategy = require('passport-local').Strategy;
+  , passport = require('passport');
+
+// load auth schemes
+var auth = require('./lib/auth');
 
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -19,8 +16,6 @@ app.use(express.methodOverride());
 app.use(express.cookieParser());
 app.use(express.session({ secret: "vegetable meat" }));
 app.use(passport.initialize());
-app.use(passport.session());
-app.use(flash());
 
 GAME = {};
 
@@ -33,9 +28,6 @@ if ( GAME.config.logging ) {
 // set up models
 GAME.db = require('./models/models.js');
 
-// load auth schemes
-//var auth = require('./lib/auth');
-
 // load routes
 var page = require('./routes/page'),
     bid = require('./routes/bid'),
@@ -46,12 +38,12 @@ var page = require('./routes/page'),
 app.get('/', page.index);
 
 // bid routes
-app.post('/bid', bid.create_bid);
-app.get('/bid/:order_id', bid.bid_status);
+app.post('/bid', passport.authenticate('basic', { session: false }), bid.create_bid);
+app.get('/bid/:order_id', passport.authenticate('basic', { session: false }), bid.bid_status);
 
 // ask routes
-app.post('/ask', ask.create_ask);
-app.get('/ask/:order_id', ask.ask_status);
+app.post('/ask', passport.authenticate('basic', { session: false }), ask.create_ask);
+app.get('/ask/:order_id', passport.authenticate('basic', { session: false }), ask.ask_status);
 
 // utility routes
 app.get('/healthcheck', util.healthcheck);
