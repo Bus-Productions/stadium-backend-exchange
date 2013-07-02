@@ -14,7 +14,6 @@ var express = require('express')
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.use(express.static(__dirname + '/public'));
-app.use(express.logger());
 app.use(express.bodyParser());
 app.use(express.methodOverride());
 app.use(express.cookieParser());
@@ -26,6 +25,10 @@ app.use(flash());
 GAME = {};
 
 GAME.config = require('./config/config.js').config();
+
+if ( GAME.config.logging ) {
+  app.use(express.logger());
+}
 
 // set up models
 GAME.db = require('./models/models.js');
