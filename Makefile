@@ -10,5 +10,7 @@ clean:
 	psql -c 'Drop table "Symbols"' -d stadium_exchange_test
 	psql -c 'Drop table "Users"' -d stadium_exchange_test
 
+default_admin:
+	node scripts/make_admin_user.js
 
-.PHONY: all test clean
+.PHONY: all test clean default_admin
