@@ -9,25 +9,12 @@ var sequelize = new Sequelize(GAME.config.dbname, GAME.config.dbuser, GAME.confi
 var Symbol = require("./symbol")(sequelize, Sequelize);
 var Bid = require("./bid")(sequelize, Sequelize);
 var Ask = require("./ask")(sequelize, Sequelize);
-
-/*
-User
-  .hasMany(Phonenumber)
-  .hasMany(Recording);
-
-Phonenumber
-  .belongsTo(User)
-  .hasOne(Recording)
-  .hasMany(Call);
-
-Recording.belongsTo(User);
-
-Call.belongsTo(Phonenumber);
-*/
+var User = require("./user")(sequelize, Sequelize);
 
 exports.Symbol = Symbol;
 exports.Bid = Bid;
 exports.Ask = Ask;
+exports.User = User;
 
 sequelize.sync().success(function(){
   console.log("DB Synced");
