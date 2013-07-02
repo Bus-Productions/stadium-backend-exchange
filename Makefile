@@ -1,8 +1,15 @@
-test: clean set_test_env default_admin
-	node_modules/.bin/mocha
+.EXPORT_ALL_VARIABLES:
 
-dev: set_dev_env default_admin
-	node server.js
+database:
+	sh scripts/init_db.sh
+
+test: clean
+	@NODE_ENV=test node scripts/make_admin_user.js
+	@NODE_ENV=test node_modules/.bin/mocha
+
+dev:
+	@NODE_ENV=development node scripts/make_admin_user.js
+	@NODE_ENV=development node server.js
 
 default_admin:
 	node scripts/make_admin_user.js
@@ -13,10 +20,4 @@ clean:
 	psql -c 'Drop table "Symbols"' -d stadium_exchange_test || echo ""
 	psql -c 'Drop table "Users"' -d stadium_exchange_test || echo ""
 
-set_dev_env:
-	export NODE_ENV=development
-
-set_test_env:
-	export NODE_ENV=test
-
-.PHONY: all test clean default_admin set_test_env set_dev_env
+.PHONY: all test clean default_admin dev

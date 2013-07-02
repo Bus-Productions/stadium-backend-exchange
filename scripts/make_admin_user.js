@@ -12,6 +12,7 @@ var Sequelize = require("sequelize");
 var sequelize = new Sequelize(GAME.config.dbname, GAME.config.dbuser, GAME.config.dbpass, {
   host: GAME.config.dbhost,
   port: GAME.config.dbport,
+  logging: GAME.config.logging,
   protocol: 'postgres',
   dialect:'postgres'
 });
