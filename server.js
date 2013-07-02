@@ -36,7 +36,7 @@ GAME.db = require('./models/models.js');
 // load routes
 var page = require('./routes/page'),
     bid = require('./routes/bid'),
-    //ask = require('./routes/ask'),
+    ask = require('./routes/ask'),
     util = require('./routes/util');
 
 
@@ -46,6 +46,9 @@ app.get('/', page.index);
 app.post('/bid', bid.create_bid);
 app.get('/bid/:order_id', bid.bid_status);
 
+// ask routes
+app.post('/ask', ask.create_ask);
+app.get('/ask/:order_id', ask.ask_status);
 
 // utility routes
 app.get('/healthcheck', util.healthcheck);
