@@ -8,14 +8,6 @@ var should = require('chai').should(),
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
 
-//var Sequelize = require("sequelize");
-//var sequelize = new Sequelize(config.dbname, config.dbuser, config.dbpass, {
-//  host: config.dbhost,
-//  port: config.dbport,
-//  protocol: 'postgres',
-//  dialect:'postgres'
-//});
-
 // helpers
 var report_error = function(err, res, done) {
   if (err) {
@@ -28,18 +20,12 @@ var report_error = function(err, res, done) {
 
 // surrounds
 before(function() {
-  console.log("Initializing the application");
+  //console.log("Initializing the application");
 });
 
-//after(function(done) {
-//  sequelize.query('DELETE FROM "Bids"').success(function(myTableRows) {
-//    console.log(myTableRows);
-//    done();
-//  })
-//  .error(function(err) {
-//    console.log(err);
-//  });
-//});
+after(function(done) {
+  //console.log("Finishing the tests");
+});
 
 // *****
 // TESTS
