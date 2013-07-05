@@ -1,11 +1,9 @@
 process.env.NODE_ENV = 'test';
 
 var should = require('chai').should(),
-    supertest = require('supertest'),
+    request = require('supertest'),
     config = require('../config/config.js').config(),
-    app = require('../server'),
-    passwordHash = require('password-hash'),
-    api = supertest('http://localhost:3000');
+    app = require('../server');
 
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
@@ -49,7 +47,7 @@ before(function() {
 
 describe("Index", function() {
   it('gets the index page', function(done) {
-    api.get('/')
+    request(app).get('/')
       .expect(200, function(err,res) {
         console.log(res.body);
         report_error(err,res,done);
@@ -57,14 +55,14 @@ describe("Index", function() {
   });
 
   it('has a healthcheck', function(done) {
-    api.get('/healthcheck')
+    request(app).get('/healthcheck')
       .expect(200, done);
   });
 });
 
 describe("Auth", function() {
   it('will fail authorization', function(done) {
-    api.get("/bid/1")
+    request(app).get("/bid/1")
       .expect(401, function(err, res){
         report_error(err, res, done);
       });
@@ -73,7 +71,7 @@ describe("Auth", function() {
 
 describe("Bid", function() {
   it('can post a bid', function(done) {
-    api.post('/bid')
+    request(app).post('/bid')
     //tock Ticker Symbol, Bid Amount, Bid Quantity, Buyer ID
       .send({ symbol: 'AAA', price: 100.0, quantity: 100, buyer: 'Mr White' })
       .auth(USER, PASS)
@@ -84,7 +82,7 @@ describe("Bid", function() {
   });
 
   it('can get a bid', function(done) {
-    api.get("/bid/1")
+    request(app).get("/bid/1")
       .auth(USER, PASS)
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
@@ -98,7 +96,7 @@ describe("Bid", function() {
 
   describe('failure scenarios', function() {
     it('needs to have a record associated with a bid', function(done) {
-      api.get('/bid/1223')
+      request(app).get('/bid/1223')
         .auth(USER, PASS)
         .expect(404)
         .end(function(err,res){
@@ -106,7 +104,7 @@ describe("Bid", function() {
         });
     });
     it('needs to have an integer value for order_id', function(done) {
-      api.get('/bid/asdf')
+      request(app).get('/bid/asdf')
         .auth(USER, PASS)
         .expect(400)
         .end(function(err,res){
@@ -114,7 +112,7 @@ describe("Bid", function() {
         });
     });
     it('needs a bid quantity', function(done) {
-      api.post('/bid')
+      request(app).post('/bid')
         .send({ symbol: 'AAA', price: 100.0, buyer: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -123,7 +121,7 @@ describe("Bid", function() {
         });
     });
     it('needs a bid symbol', function(done) {
-      api.post('/bid')
+      request(app).post('/bid')
         .send({ quantity: 100, price: 100.0, buyer: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -132,7 +130,7 @@ describe("Bid", function() {
         });
     });
     it('needs a bid price', function(done) {
-      api.post('/bid')
+      request(app).post('/bid')
         .send({ symbol: 'AAA', quantity: 100, buyer: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -141,7 +139,7 @@ describe("Bid", function() {
         });
     });
     it('needs a bid buyer', function(done) {
-      api.post('/bid')
+      request(app).post('/bid')
         .send({ symbol: 'AAA', price: 100.0, quantity: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -150,7 +148,7 @@ describe("Bid", function() {
         });
     });
     it('needs a bid buyer and a symbol', function(done) {
-      api.post('/bid')
+      request(app).post('/bid')
         .send({ price: 100.0, quantity: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -164,7 +162,7 @@ describe("Bid", function() {
 
 describe("Ask", function() {
   it('can post a ask', function(done) {
-    api.post('/ask')
+    request(app).post('/ask')
     //tock Ticker Symbol, Ask Amount, Ask Quantity, Buyer ID
       .send({ symbol: 'AAA', price: 100.0, quantity: 100, seller: 'Mr White' })
       .auth(USER, PASS)
@@ -175,7 +173,7 @@ describe("Ask", function() {
   });
 
   it('can get a ask', function(done) {
-    api.get("/ask/1")
+    request(app).get("/ask/1")
       .auth(USER, PASS)
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
@@ -189,7 +187,7 @@ describe("Ask", function() {
 
   describe('failure scenarios', function() {
     it('needs to have a record associated with a ask', function(done) {
-      api.get('/ask/1223')
+      request(app).get('/ask/1223')
         .auth(USER, PASS)
         .expect(404)
         .end(function(err,res){
@@ -197,7 +195,7 @@ describe("Ask", function() {
         });
     });
     it('needs to have an integer value for order_id', function(done) {
-      api.get('/ask/asdf')
+      request(app).get('/ask/asdf')
         .auth(USER, PASS)
         .expect(400)
         .end(function(err,res){
@@ -205,7 +203,7 @@ describe("Ask", function() {
         });
     });
     it('needs a ask quantity', function(done) {
-      api.post('/ask')
+      request(app).post('/ask')
         .send({ symbol: 'AAA', price: 100.0, seller: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -214,7 +212,7 @@ describe("Ask", function() {
         });
     });
     it('needs a ask symbol', function(done) {
-      api.post('/ask')
+      request(app).post('/ask')
         .send({ quantity: 100, price: 100.0, seller: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -223,7 +221,7 @@ describe("Ask", function() {
         });
     });
     it('needs a ask price', function(done) {
-      api.post('/ask')
+      request(app).post('/ask')
         .send({ symbol: 'AAA', quantity: 100, seller: 'Mr White' })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -232,7 +230,7 @@ describe("Ask", function() {
         });
     });
     it('needs a ask seller', function(done) {
-      api.post('/ask')
+      request(app).post('/ask')
         .send({ symbol: 'AAA', price: 100.0, quantity: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
@@ -241,7 +239,7 @@ describe("Ask", function() {
         });
     });
     it('needs a ask seller and a symbol', function(done) {
-      api.post('/ask')
+      request(app).post('/ask')
         .send({ price: 100.0, quantity: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){

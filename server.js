@@ -48,5 +48,5 @@ app.get('/ask/:order_id', passport.authenticate('basic', { session: false }), as
 // utility routes
 app.get('/healthcheck', util.healthcheck);
 
-
+module.exports = app;
 app.listen(GAME.config.port);
