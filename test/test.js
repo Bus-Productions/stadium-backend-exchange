@@ -23,7 +23,7 @@ before(function() {
   //console.log("Initializing the application");
 });
 
-after(function(done) {
+after(function() {
   //console.log("Finishing the tests");
 });
 
