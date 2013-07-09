@@ -30,15 +30,16 @@ exports.config = function(){
       method: 'POST'
     };
   } else if (env == "staging"){
+    var match = process.env.HEROKU_POSTGRESQL_GOLD_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
     return {
       env: 'staging',
       logging: true,
-      dbname: 'stadium_exchange',
-      dbuser: 'stadium_exchange',
-      dbpass: 'game2013',
-      dbhost: 'poop.compute-1.amazonaws.com',
-      dbport: 5432,
-      host: 'blah.elasticbeanstalk.com',
+      dbname: match[5],
+      dbuser: match[1],
+      dbpass: match[2],
+      dbhost: match[3],
+      dbport: match[4],
+      host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
     };

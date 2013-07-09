@@ -24,3 +24,15 @@ Development environment uses port 4200
 ```
 make test
 ```
+
+### Deploying to Heroku
+
+Make sure that the `Procfile` has the application listed under `web`.
+```
+heroku apps:create gamestage
+heroku config:set NODE_ENV=staging
+# Free
+heroku addons:add heroku-postgresql:dev
+# $20/month - currently unused
+# heroku addons:add ssl
+```
