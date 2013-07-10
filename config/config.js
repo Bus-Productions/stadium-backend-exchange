@@ -30,7 +30,7 @@ exports.config = function(){
       method: 'POST'
     };
   } else if (env == "staging"){
-    var match = process.env.HEROKU_POSTGRESQL_GOLD_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
+    var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
     return {
       env: 'staging',
       logging: true,
