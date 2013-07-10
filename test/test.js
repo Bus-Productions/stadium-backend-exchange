@@ -274,13 +274,13 @@ describe("Symbol", function() {
         .send({ symbol: 'AAA', price: 100.0 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
-          res.text.should.match(/quantity/);
+          res.text.should.match(/issued/);
           report_error(err, res, done);
         });
     });
     it('needs a symbol', function(done) {
       request(app).post('/symbol')
-        .send({ quantity: 100, price: 100.0 })
+        .send({ issued: 100, price: 100.0 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/symbol/);
@@ -289,7 +289,7 @@ describe("Symbol", function() {
     });
     it('needs a price', function(done) {
       request(app).post('/symbol')
-        .send({ symbol: 'AAA', quantity: 100 })
+        .send({ symbol: 'AAA', issued: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/price/);
@@ -298,7 +298,7 @@ describe("Symbol", function() {
     });
     it('needs a price and a symbol', function(done) {
       request(app).post('/symbol')
-        .send({ quantity: 100 })
+        .send({ issued: 100 })
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/price/);
