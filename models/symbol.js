@@ -1,7 +1,7 @@
 module.exports = function(sequelize, Sequelize){
 
   return sequelize.define('Symbol', {
-    symbol: Sequelize.STRING,
+    symbol: { type: Sequelize.STRING, unique: true },
     price: Sequelize.FLOAT,
     issued: Sequelize.INTEGER
   },{

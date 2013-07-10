@@ -32,6 +32,7 @@ GAME.db = require('./models/models.js');
 var page = require('./routes/page'),
     bid = require('./routes/bid'),
     ask = require('./routes/ask'),
+    symbol = require('./routes/symbol'),
     util = require('./routes/util');
 
 
@@ -44,6 +45,9 @@ app.get('/bid/:order_id', passport.authenticate('basic', { session: false }), bi
 // ask routes
 app.post('/ask', passport.authenticate('basic', { session: false }), ask.create_ask);
 app.get('/ask/:order_id', passport.authenticate('basic', { session: false }), ask.ask_status);
+
+// symbol routes
+app.get('/symbol/:symbol', passport.authenticate('basic', { session: false }), symbol.get_symbol);
 
 // utility routes
 app.get('/healthcheck', util.healthcheck);
