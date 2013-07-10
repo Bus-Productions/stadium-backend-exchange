@@ -35,4 +35,9 @@ heroku config:set NODE_ENV=staging
 heroku addons:add heroku-postgresql:dev
 # $20/month - currently unused
 # heroku addons:add ssl
+
+# Update the code on the heroku server
+git push heroku master
+# First time only, create the administrator user
+heroku run node scripts/make_admin_user.js
 ```
