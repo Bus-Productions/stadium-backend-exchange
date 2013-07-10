@@ -1,11 +1,11 @@
-var passwordHash = require('password-hash'),
-    USER = 'admin@stadiumexchange.com',
-    PASS = passwordHash.generate('game2013');
-
+var passwordHash = require('password-hash');
 
 GAME = {};
 
 GAME.config = require('../config/config.js').config();
+
+var USER = GAME.config.admin_user,
+    PASS = passwordHash.generate(GAME.config.admin_pass);
 
 // set up models
 var Sequelize = require("sequelize");

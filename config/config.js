@@ -12,6 +12,8 @@ exports.config = function(){
       dbpass: 'game2013',
       dbhost: 'localhost',
       dbport: 5432,
+      admin_user: 'admin@stadiumexchange.com',
+      admin_pass: 'game2013',
       host: 'localhost',
       port: 4200,
       method: 'POST'
@@ -25,6 +27,8 @@ exports.config = function(){
       dbpass: 'game2013',
       dbhost: 'localhost',
       dbport: 5432,
+      admin_user: 'admin@stadiumexchange.com',
+      admin_pass: 'game2013',
       host: 'localhost',
       port: 3000,
       method: 'POST'
@@ -39,6 +43,8 @@ exports.config = function(){
       dbpass: match[2],
       dbhost: match[3],
       dbport: match[4],
+      admin_user: 'admin@stadiumexchange.com',
+      admin_pass: 'game2013',
       host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
@@ -52,6 +58,8 @@ exports.config = function(){
       dbpass: 'game2013',
       dbhost: 'db.something.com',
       dbport: 5432,
+      admin_user: 'admin@stadiumexchange.com',
+      admin_pass: 'game2013',
       host: 'some.com',
       port: process.env.PORT,
       method: 'POST'
