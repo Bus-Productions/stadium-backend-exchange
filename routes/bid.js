@@ -8,9 +8,12 @@ exports.create_bid = function(req, res){
   var p = req.body;
 
   if (p.symbol && p.price && p.quantity && p.buyer){
+    var pa = p.price_affecting || true;
     GAME.db.Bid.create({
       symbol: p.symbol,
-      price: p.price,
+      price_ordered: p.price,
+      price_actual: p.price,
+      price_affecting: pa,
       quantity: p.quantity,
       buyer: p.buyer
     }).success(function(bid){

@@ -72,7 +72,7 @@ describe("Bid", function() {
       .auth(USER, PASS)
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
-        res.body.price.should.equal(100);
+        res.body.price_ordered.should.equal(100);
         res.body.quantity.should.equal(100);
         res.body.buyer.should.equal('Mr White');
         res.body.id.should.equal(1);
@@ -163,7 +163,7 @@ describe("Ask", function() {
       .auth(USER, PASS)
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
-        res.body.price.should.equal(100);
+        res.body.price_ordered.should.equal(100);
         res.body.quantity.should.equal(100);
         res.body.seller.should.equal('Mr White');
         res.body.id.should.equal(1);

@@ -8,9 +8,12 @@ exports.create_ask = function(req, res){
   var p = req.body;
 
   if (p.symbol && p.price && p.quantity && p.seller){
+    var pa = p.price_affecting || true;
     GAME.db.Ask.create({
       symbol: p.symbol,
-      price: p.price,
+      price_ordered: p.price,
+      price_actual: p.price,
+      price_affecting: pa,
       quantity: p.quantity,
       seller: p.seller
     }).success(function(ask){
