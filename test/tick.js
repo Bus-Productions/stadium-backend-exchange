@@ -20,6 +20,20 @@ var report_error = function(err, res, done) {
   }
 }
 
+var post_bid = function(symbol,done) {
+  request(app).post('/bid')
+    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White' })
+    .auth(USER, PASS)
+    .expect(201,done);
+};
+
+var post_ask = function(symbol,done) {
+  request(app).post('/ask')
+    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White' })
+    .auth(USER, PASS)
+    .expect(201,done);
+};
+
 // surrounds
 before(function() {
   //console.log("Initializing the application");
@@ -30,31 +44,20 @@ after(function() {
 });
 
 describe("Scenario1", function() {
-  before(function(done) {
-    //tock Ticker Symbol, Bid Amount, Bid Quantity, Buyer ID
-    request(app).post('/bid')
-      .send({ symbol: 'AAA', price: 100.0, quantity: 100, buyer: 'Mr White' })
-      .auth(USER, PASS)
-      .expect(201);
-    request(app).post('/bid')
-      .send({ symbol: 'BBB', price: 100.0, quantity: 100, buyer: 'Mr White' })
-      .auth(USER, PASS)
-      .expect(201);
-    request(app).post('/ask')
-      .send({ symbol: 'BBB', price: 100.0, quantity: 100, seller: 'Mr White' })
-      .auth(USER, PASS)
-      .expect(201);
-    request(app).post('/ask')
-      .send({ symbol: 'CCC', price: 100.0, quantity: 100, seller: 'Mr White' })
-      .auth(USER, PASS)
-      .expect(201);
-    done();
-  });
+  before( function(done) { post_bid('AAA',done) } );
+  before( function(done) { post_bid('BBB',done) } );
+  before( function(done) { post_ask('CCC',done) } );
+  before( function(done) { post_ask('DDD',done) } );
 
   it ('should run the tick and have one 1 trade',function(done) {
     tick.execute();
     request(app).get('/trade/AAA')
       .auth(USER, PASS)
-      .expect(200,done);
+      .expect(200, function(err, res){
+        res.text.should.match(/AAA/);
+        res.text.should.match(/Mr White/);
+        res.text.should.match(/StadiumAPP/);
+        report_error(err, res, done);
+      });
   });
 });
