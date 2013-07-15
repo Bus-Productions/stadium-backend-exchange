@@ -26,3 +26,4 @@ sequelize.sync().success(function(){
 });
 
 exports.sequelize = sequelize;
+exports.Sequelize = Sequelize;
