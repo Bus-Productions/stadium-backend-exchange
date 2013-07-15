@@ -35,10 +35,24 @@ describe("Scenario1", function() {
     request(app).post('/bid')
       .send({ symbol: 'AAA', price: 100.0, quantity: 100, buyer: 'Mr White' })
       .auth(USER, PASS)
-      .expect(201,done);
+      .expect(201);
+    request(app).post('/bid')
+      .send({ symbol: 'BBB', price: 100.0, quantity: 100, buyer: 'Mr White' })
+      .auth(USER, PASS)
+      .expect(201);
+    request(app).post('/ask')
+      .send({ symbol: 'BBB', price: 100.0, quantity: 100, seller: 'Mr White' })
+      .auth(USER, PASS)
+      .expect(201);
+    request(app).post('/ask')
+      .send({ symbol: 'CCC', price: 100.0, quantity: 100, seller: 'Mr White' })
+      .auth(USER, PASS)
+      .expect(201);
+    done();
   });
 
   it ('should run the tick and have one 1 trade',function(done) {
+    tick.execute();
     request(app).get('/trade/AAA')
       .auth(USER, PASS)
       .expect(200,done);

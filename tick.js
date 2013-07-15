@@ -34,7 +34,13 @@ exports.execute = function(){
           )
         .run()
         .success(function(results){
-          console.log(results);
+          var bids = results[0];
+          var asks = results[1];
+          console.log(bids);
+          console.log(asks);
+
+          // add price affecting bid quantities
+          var bid_q_pa, ask_q_pa;
         })
         .error(function(err){
           console.log(err);
@@ -45,3 +51,5 @@ exports.execute = function(){
   });
 
 }
+
+//exports.execute();
