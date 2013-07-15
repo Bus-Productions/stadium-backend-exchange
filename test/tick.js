@@ -20,16 +20,16 @@ var report_error = function(err, res, done) {
   }
 }
 
-var post_bid = function(symbol,done) {
+var post_bid = function(symbol,pa,done) {
   request(app).post('/bid')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White' })
+    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };
 
-var post_ask = function(symbol,done) {
+var post_ask = function(symbol,pa,done) {
   request(app).post('/ask')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White' })
+    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };
@@ -44,10 +44,11 @@ after(function() {
 });
 
 describe("Scenario1", function() {
-  before( function(done) { post_bid('AAA',done) } );
-  before( function(done) { post_bid('BBB',done) } );
-  before( function(done) { post_ask('CCC',done) } );
-  before( function(done) { post_ask('DDD',done) } );
+  before( function(done) { post_bid('AAA',false,done) } );
+  before( function(done) { post_bid('BBB',true,done) } );
+  before( function(done) { post_ask('BBB',true,done) } );
+  before( function(done) { post_ask('CCC',true,done) } );
+  before( function(done) { post_ask('CCC',false,done) } );
 
   it ('should run the tick and have one 1 trade',function(done) {
     tick.execute();
