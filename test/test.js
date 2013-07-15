@@ -249,7 +249,7 @@ describe("Symbol", function() {
       });
   });
 
-  it('can get a bid', function(done) {
+  it('can get a symbol', function(done) {
     request(app).get("/symbol/AAA")
       .auth(USER, PASS)
       .expect(200, function(err, res){

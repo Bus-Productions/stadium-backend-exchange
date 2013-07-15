@@ -33,6 +33,7 @@ var page = require('./routes/page'),
     bid = require('./routes/bid'),
     ask = require('./routes/ask'),
     symbol = require('./routes/symbol'),
+    trade = require('./routes/trade'),
     util = require('./routes/util');
 
 
@@ -49,6 +50,10 @@ app.get('/ask/:order_id', passport.authenticate('basic', { session: false }), as
 // symbol routes
 app.post('/symbol', passport.authenticate('basic', { session: false }), symbol.create_symbol);
 app.get('/symbol/:symbol', passport.authenticate('basic', { session: false }), symbol.get_symbol);
+
+// trade routes
+app.get('/trade/:trade', passport.authenticate('basic', { session: false }), trade.get_trades);
+
 
 // utility routes
 app.get('/healthcheck', util.healthcheck);
