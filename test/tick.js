@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 var should = require('chai').should(),
+    helpers = require('./utils/helpers.js'),
     config = require('../config/config.js').config(),
     sequelize = require('../models/models.js').sequelize,
     request = require('supertest'),
@@ -63,8 +64,8 @@ describe("Scenario1", function() {
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
         res.body.buyer.should.equal('Mr White');
-        //res.body.seller.should.equal('StadiumAPP');
-        report_error(err, res, done);
+        res.body.seller.should.equal('StadiumAPP');
+        helpers.report_error(err, res, done);
       });
   });
 
