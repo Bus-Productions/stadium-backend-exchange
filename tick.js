@@ -13,6 +13,9 @@ var symbols = {};
 
 GAME.db.sequelize.query('SELECT DISTINCT symbol FROM "Bids" WHERE NOT matched AND order_placed_at < \''+now.toUTCString()+'\' UNION SELECT DISTINCT symbol FROM "Asks" WHERE NOT matched AND order_placed_at < \''+now.toUTCString()+"'").success(function(symbols){
   console.log(symbols);
+  for (var i=0;i<symbols.length;i++){
+    console.log(symbols[i].symbol);
+  }
 }).error(function(err){
   console.log(err);
 });
