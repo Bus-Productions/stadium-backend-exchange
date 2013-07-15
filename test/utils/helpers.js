@@ -1,6 +1,4 @@
 var should = require('chai').should(),
-    config = require('../../config/config.js').config(),
-    sequelize = require('../../models/models.js').sequelize,
     request = require('supertest'),
     app  = require('../../server'),
     tick = require('../../tick');
@@ -16,17 +14,16 @@ exports.report_error = function(err, res, done) {
   }
 }
 
-exports.post_bid = function(symbol,done) {
+exports.post_bid = function(symbol,pa,done) {
   request(app).post('/bid')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White' })
+    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };
 
-exports.post_ask = function(symbol,done) {
+exports.post_ask = function(symbol,pa,done) {
   request(app).post('/ask')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White' })
+    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };
-

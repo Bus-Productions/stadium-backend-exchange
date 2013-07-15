@@ -1,20 +1,11 @@
-process.env.NODE_ENV = 'test';
-
 var should = require('chai').should(),
     request = require('supertest'),
+    helpers = require('./utils/helpers.js'),
     config = require('../config/config.js').config(),
     app = require('../server');
 
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
-
-var report_error = function(err, res, done) {
-  if (err) {
-    return done(err);
-  } else {
-    done();
-  }
-}
 
 describe("Ask", function() {
   it('can post a ask', function(done) {
@@ -24,7 +15,7 @@ describe("Ask", function() {
       .auth(USER, PASS)
       .expect(201)
       .end(function(err, res){
-        report_error(err, res, done);
+        helpers.report_error(err, res, done);
       });
   });
 
@@ -37,7 +28,7 @@ describe("Ask", function() {
         res.body.quantity.should.equal(100);
         res.body.seller.should.equal('Mr White');
         res.body.id.should.equal(1);
-        report_error(err, res, done);
+        helpers.report_error(err, res, done);
       });
   });
 
@@ -47,7 +38,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(404)
         .end(function(err,res){
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs to have an integer value for order_id', function(done) {
@@ -55,7 +46,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(400)
         .end(function(err,res){
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs a ask quantity', function(done) {
@@ -64,7 +55,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/quantity/);
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs a ask symbol', function(done) {
@@ -73,7 +64,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/symbol/);
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs a ask price', function(done) {
@@ -82,7 +73,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/price/);
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs a ask seller', function(done) {
@@ -91,7 +82,7 @@ describe("Ask", function() {
         .auth(USER, PASS)
         .expect(400, function(err, res){
           res.text.should.match(/seller/);
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
     it('needs a ask seller and a symbol', function(done) {
@@ -101,7 +92,7 @@ describe("Ask", function() {
         .expect(400, function(err, res){
           res.text.should.match(/seller/);
           res.text.should.match(/symbol/);
-          report_error(err, res, done);
+          helpers.report_error(err, res, done);
         });
     });
   });
