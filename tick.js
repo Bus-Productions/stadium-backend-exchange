@@ -115,21 +115,70 @@ var nextMatch = function(now, symbol){
       if (bid && ask){
         if (bid.values.price_actual >= ask.values.price_actual){
           console.log("match");
+          // set bid actual price to ask actual price
+          bid.price_actual = ask.values.price_actual;
+
           if (bid.values.quantity > ask.values.quantity){
-            //create new bid order and update this bid
+            console.log("bid qty higher");
+            //create new bid order and update this bid and ask
+            var new_bid_qty = bid.values.quantity - ask.values.quantity;
+            GAME.db.Bid.create({
+              symbol: bid.values.symbol,
+              price_ordered: bid.values.price_ordered,
+              price_actual: bid.values.price_actual,
+              price_affecting: bid.values.price_affecting,
+              quantity: new_bid_qty,
+              buyer: bid.values.buyer
+            }).success(function(newbid){
+              bid.quantity = ask.values.quantity;
+              createTrade(bid, ask, function(){
+                console.log("CALLBACK!");
+                //nextMatch(now, symbol);
+              });
+            });
           } else if (bid.values.quantity < ask.values.quantity){
+            console.log("ask qty higher");
             //create new ask order and update this ask
           }
-          //update matched flag on bid and ask, save
-
+          console.log("identical");
+          // create trade
+          createTrade(bid, ask, function(){
+            console.log("CALLBACK!");
+            //nextMatch(now, symbol);
+          });
         } else {
           console.log("positive spread, no match");
         }
 
-        //nextMatch(now, symbol);
       }
     })
     .error(function(err){
       console.log(err);
     });
+}
+
+// bid and ask instance MUST already be matched in price and quantity
+var createTrade = function(bid, ask, callback){
+  bid.matched = true;
+  ask.matched = true;
+  GAME.db.Trade.create({
+    symbol: bid.values.symbol,
+    price: ask.values.price_actual,
+    quantity: bid.values.quantity,
+    buyer: bid.values.buyer,
+    bid: bid.values.id,
+    seller: ask.values.seller,
+    ask: ask.values.id
+  }).success(function(trade){
+    console.log("trade created");
+    bid.save().success(function(bid){
+      console.log("bid saved");
+      ask.save().success(function(ask){
+        console.log("ask saved");
+        if (callback){ callback(); }
+      });
+    });
+  }).error(function(err){
+    console.log(err);
+  });
 }
