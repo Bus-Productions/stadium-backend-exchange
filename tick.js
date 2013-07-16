@@ -106,11 +106,28 @@ var nextMatch = function(now, symbol){
       )
     .run()
     .success(function(results){
-      var bids = results[0];
-      var asks = results[1];
+      var bid = results[0];
+      var ask = results[1];
       console.log(symbol);
-      console.log(bids.values);
-      console.log(asks.values);
+      //console.log(bid.values);
+      //console.log(ask.values);
+
+      if (bid && ask){
+        if (bid.values.price_actual >= ask.values.price_actual){
+          console.log("match");
+          if (bid.values.quantity > ask.values.quantity){
+            //create new bid order and update this bid
+          } else if (bid.values.quantity < ask.values.quantity){
+            //create new ask order and update this ask
+          }
+          //update matched flag on bid and ask, save
+
+        } else {
+          console.log("positive spread, no match");
+        }
+
+        //nextMatch(now, symbol);
+      }
     })
     .error(function(err){
       console.log(err);
