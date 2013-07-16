@@ -19,5 +19,6 @@ clean:
 	psql -c 'Drop table "Asks"' -d stadium_exchange_test || echo ""
 	psql -c 'Drop table "Symbols"' -d stadium_exchange_test || echo ""
 	psql -c 'Drop table "Users"' -d stadium_exchange_test || echo ""
+	psql -c 'Drop table "Trades"' -d stadium_exchange_test || echo ""
 
 .PHONY: all test clean default_admin dev

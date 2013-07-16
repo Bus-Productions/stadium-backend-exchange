@@ -59,10 +59,12 @@ describe("Scenario1", function() {
     request(app).get('/trade/AAA')
       .auth(USER, PASS)
       .expect(200, function(err, res){
-        res.text.should.match(/AAA/);
-        res.text.should.match(/Mr White/);
-        res.text.should.match(/StadiumAPP/);
+        res.body.symbol.should.equal('AAA');
+        res.body.buyer.should.equal('Mr White');
+        //res.body.seller.should.equal('StadiumAPP');
         report_error(err, res, done);
       });
   });
+
+  after( function(done) { setTimeout(function(){ done();},1000); });
 });
