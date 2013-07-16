@@ -139,13 +139,29 @@ var nextMatch = function(now, symbol){
           } else if (bid.values.quantity < ask.values.quantity){
             console.log("ask qty higher");
             //create new ask order and update this ask
+            var new_ask_qty = ask.values.quantity - bid.values.quantity;
+            GAME.db.Ask.create({
+              symbol: ask.values.symbol,
+              price_ordered: ask.values.price_ordered,
+              price_actual: ask.values.price_actual,
+              price_affecting: ask.values.price_affecting,
+              quantity: new_ask_qty,
+              seller: ask.values.seller
+            }).success(function(newask){
+              ask.quantity = bid.values.quantity;
+              createTrade(bid, ask, function(){
+                console.log("CALLBACK!");
+                //nextMatch(now, symbol);
+              });
+            });
+          } else {
+            console.log("identical");
+            // create trade
+            createTrade(bid, ask, function(){
+              console.log("CALLBACK!");
+              //nextMatch(now, symbol);
+            });
           }
-          console.log("identical");
-          // create trade
-          createTrade(bid, ask, function(){
-            console.log("CALLBACK!");
-            //nextMatch(now, symbol);
-          });
         } else {
           console.log("positive spread, no match");
         }
