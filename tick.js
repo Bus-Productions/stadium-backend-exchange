@@ -9,7 +9,7 @@ GAME.db = require('./models/models.js');
 //
 
 
-exports.execute = function(){
+exports.pretick = function(){
 
   var now = new Date();
   var symbols = {};
@@ -75,4 +75,44 @@ exports.execute = function(){
     console.log(err);
   });
 
+}
+
+exports.execute = function(){
+  var now = new Date();
+
+  GAME.db.sequelize.query('SELECT DISTINCT symbol FROM "Bids" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+'\' UNION SELECT DISTINCT symbol FROM "Asks" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+"'").success(function(symbols){
+    for (var i=0;i<symbols.length;i++){
+      nextMatch(now,symbols[i].symbol);
+    }
+  }).error(function(err){
+    console.log(err);
+  });
+}
+
+
+var nextMatch = function(now, symbol){
+  var chainer = new GAME.db.Sequelize.Utils.QueryChainer;
+
+  chainer
+    .add(
+      GAME.db.Bid.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual DESC, order_placed_at DESC, quantity DESC"}).error(function(err){
+        console.log(err);
+      })
+      )
+    .add(
+      GAME.db.Ask.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual ASC, order_placed_at DESC, quantity DESC"}).error(function(err){
+        console.log(err);
+      })
+      )
+    .run()
+    .success(function(results){
+      var bids = results[0];
+      var asks = results[1];
+      console.log(symbol);
+      console.log(bids.values);
+      console.log(asks.values);
+    })
+    .error(function(err){
+      console.log(err);
+    });
 }
