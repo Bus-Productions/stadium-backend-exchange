@@ -45,6 +45,8 @@ after(function() {
 
 describe("Scenario1", function() {
   before( function(done) { post_bid('AAA',110,120,false,done) } );
+  before( function(done) { post_ask('AAA',100,50,false,done) } );
+  before( function(done) { post_ask('AAA',100,80,false,done) } );
   before( function(done) { post_bid('BBB',100,90,true,done) } );
   before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_ask('BBB',100,90,true,done) } );

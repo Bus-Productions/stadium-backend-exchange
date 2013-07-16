@@ -133,7 +133,7 @@ var nextMatch = function(now, symbol){
               bid.quantity = ask.values.quantity;
               createTrade(bid, ask, function(){
                 console.log("CALLBACK!");
-                //nextMatch(now, symbol);
+                nextMatch(now, symbol);
               });
             });
           } else if (bid.values.quantity < ask.values.quantity){
@@ -151,7 +151,7 @@ var nextMatch = function(now, symbol){
               ask.quantity = bid.values.quantity;
               createTrade(bid, ask, function(){
                 console.log("CALLBACK!");
-                //nextMatch(now, symbol);
+                nextMatch(now, symbol);
               });
             });
           } else {
@@ -159,7 +159,7 @@ var nextMatch = function(now, symbol){
             // create trade
             createTrade(bid, ask, function(){
               console.log("CALLBACK!");
-              //nextMatch(now, symbol);
+              nextMatch(now, symbol);
             });
           }
         } else {
