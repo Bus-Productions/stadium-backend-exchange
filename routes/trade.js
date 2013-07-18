@@ -6,7 +6,7 @@
 
 exports.get_trades = function(req, res){
   if (req.params.trade){
-    GAME.db.Trade.find({where: {symbol: req.params.trade}}).success(function(trade){
+    GAME.db.Trade.findAll({where: {symbol: req.params.trade}}).success(function(trade){
       if (trade && trade.values){
         res.send(200, trade.values);
       } else {
