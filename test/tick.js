@@ -50,11 +50,23 @@ describe("Scenario1", function() {
   before( function(done) { post_bid('BBB',100,90,true,done) } );
   before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_ask('BBB',100,90,true,done) } );
-  before( function(done) { post_ask('BBB',100,110,true,done) } );
+  before( function(done) { post_ask('BBB',100,410,true,done) } );
   before( function(done) { post_bid('CCC',100,90,true,done) } );
   //before( function(done) { post_bid('CCC',100,95,true,done) } );
   before( function(done) { post_ask('CCC',110,90,true,done) } );
   //before( function(done) { post_ask('CCC',100,95,false,done) } );
+  before( function(done) {
+    request(app).post('/symbol')
+      .send({ symbol: 'BBB', price: 100, issued: 1000 })
+      .auth(USER, PASS)
+      .expect(201,done);
+  });
+  before( function(done) {
+    request(app).post('/symbol')
+      .send({ symbol: 'CCC', price: 100, issued: 1000 })
+      .auth(USER, PASS)
+      .expect(201,done);
+  });
 
   it ('should run the tick and have one 4 trades',function(done) {
     tick.execute();

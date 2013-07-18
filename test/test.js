@@ -241,7 +241,7 @@ describe("Symbol", function() {
   it('can create a symbol', function(done) {
     request(app).post('/symbol')
     //tock Ticker Symbol, Bid Amount, Bid Quantity, Buyer ID
-      .send({ symbol: 'AAA', price: 100.0, issued: 100 })
+      .send({ symbol: 'AAA', price: 100.0, issued: 1000 })
       .auth(USER, PASS)
       .expect(201)
       .end(function(err, res){
@@ -255,7 +255,7 @@ describe("Symbol", function() {
       .expect(200, function(err, res){
         res.body.symbol.should.equal('AAA');
         res.body.price.should.equal(100);
-        res.body.issued.should.equal(100);
+        res.body.issued.should.equal(1000);
         report_error(err, res, done);
       });
   });
