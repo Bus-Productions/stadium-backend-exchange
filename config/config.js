@@ -21,7 +21,7 @@ exports.config = function(){
   } else if (env == "test"){
     return {
       env: 'test',
-      logging: true,
+      logging: false,
       dbname: 'stadium_exchange_test',
       dbuser: 'stadium_exchange',
       dbpass: 'game2013',

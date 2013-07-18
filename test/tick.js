@@ -58,15 +58,16 @@ describe("Scenario1", function() {
 
   it ('should run the tick and have one 1 trade',function(done) {
     tick.execute();
-    request(app).get('/trade/AAA')
-      .auth(USER, PASS)
-      .expect(200, function(err, res){
-        res.body.symbol.should.equal('AAA');
-        res.body.buyer.should.equal('Mr White');
-        //res.body.seller.should.equal('StadiumAPP');
-        report_error(err, res, done);
-      });
+    setTimeout(function(){
+      request(app).get('/trade/AAA')
+        .auth(USER, PASS)
+        .expect(200, function(err, res){
+          res.body.symbol.should.equal('AAA');
+          res.body.buyer.should.equal('Mr White');
+          //res.body.seller.should.equal('StadiumAPP');
+          report_error(err, res, done);
+        });
+    },1000);
   });
 
-  after( function(done) { setTimeout(function(){ done();},1000); });
 });
