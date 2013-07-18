@@ -2,7 +2,7 @@ process.env.NODE_ENV = 'test';
 
 var should = require('chai').should(),
     config = require('../config/config.js').config(),
-    sequelize = require('../models/models.js').sequelize,
+    db = require('../models/models.js'),
     request = require('supertest'),
     app  = require('../server'),
     tick = require('../tick');
@@ -43,45 +43,60 @@ after(function() {
   //console.log("Finishing the tests");
 });
 
-describe("Scenario1", function() {
-  before( function(done) { post_bid('AAA',110,120,false,done) } );
-  before( function(done) { post_ask('AAA',100,50,false,done) } );
-  before( function(done) { post_ask('AAA',100,80,false,done) } );
-  before( function(done) { post_bid('BBB',100,90,true,done) } );
+describe("0 bid, 0 ask - no trade:", function() {
+  it ('should run the tick and have no trades',function(done) {
+    tick.execute();
+    setTimeout(function(){
+      request(app).get('/trade/A')
+        .auth(USER, PASS)
+        .expect(200, function(err, res){
+          res.body.length.should.equal(0);
+          report_error(err, res, done);
+        });
+    },100);
+  });
+});
+
+describe("1 bid, 1 ask - perfect match:", function() {
   before( function(done) { post_bid('BBB',100,100,true,done) } );
-  before( function(done) { post_ask('BBB',100,90,true,done) } );
-  before( function(done) { post_ask('BBB',100,410,true,done) } );
-  before( function(done) { post_bid('CCC',100,90,true,done) } );
-  //before( function(done) { post_bid('CCC',100,95,true,done) } );
-  before( function(done) { post_ask('CCC',110,90,true,done) } );
-  //before( function(done) { post_ask('CCC',100,95,false,done) } );
+  before( function(done) { post_ask('BBB',100,100,true,done) } );
+
   before( function(done) {
     request(app).post('/symbol')
       .send({ symbol: 'BBB', price: 100, issued: 1000 })
       .auth(USER, PASS)
       .expect(201,done);
   });
-  before( function(done) {
-    request(app).post('/symbol')
-      .send({ symbol: 'CCC', price: 100, issued: 1000 })
-      .auth(USER, PASS)
-      .expect(201,done);
-  });
 
-  it ('should run the tick and have one 4 trades',function(done) {
+  it ('should run the tick and have one trade',function(done) {
     tick.execute();
     setTimeout(function(){
       request(app).get('/trade/BBB')
         .auth(USER, PASS)
         .expect(200, function(err, res){
+          res.body.length.should.equal(1);
           res.body[0].symbol.should.equal('BBB');
-          res.body[1].symbol.should.equal('BBB');
-          //res.body[1].buyer.should.equal('Mr White');
-          //res.body.seller.should.equal('StadiumAPP');
-          res.body.length.should.equal(2);
+          res.body[0].buyer.should.equal('Mr White');
           report_error(err, res, done);
         });
     },100);
   });
+});
 
+describe("2 bid, 1 ask - mismatch quantity:", function() {
+  before( function(done) { post_bid('BBC',100,40,true,done) } );
+  before( function(done) { post_bid('BBC',100,60,true,done) } );
+  before( function(done) { post_ask('BBC',100,100,true,done) } );
+
+
+  it ('should run the tick and have 2 trades and no remaining bids/asks',function(done) {
+    tick.execute();
+    setTimeout(function(){
+      db.Trade.findAll({ where: {symbol: 'BBC'} })
+                .success(function(results) {
+                  results.length.should.equal(2);
+                });
+    },100);
+    done();
+  });
 });
