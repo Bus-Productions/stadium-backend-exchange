@@ -42,7 +42,7 @@ var pretick = function(now, symbols, callback){
         .success(function(results){
           var bids = results[0];
           var asks = results[1];
-          console.log(this_symbol);
+          //console.log(this_symbol);
           //console.log(bids);
           //console.log(asks);
 

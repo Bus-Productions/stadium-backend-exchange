@@ -43,20 +43,23 @@ after(function() {
   //console.log("Finishing the tests");
 });
 
-describe("0 bid, 0 ask - no trade:", function() {
-  it ('should run the tick and have no trades',function(done) {
-    tick.execute();
-    setTimeout(function(){
-      request(app).get('/trade/A')
-        .auth(USER, PASS)
-        .expect(200, function(err, res){
-          res.body.length.should.equal(0);
-          report_error(err, res, done);
-        });
-    },100);
-  });
-});
+describe("Scenarios - Non Price Affecting", function() {
 
+  describe("0 bid, 0 ask - no trade:", function() {
+    it ('should run the tick and have no trades',function(done) {
+      tick.execute();
+      setTimeout(function(){
+        request(app).get('/trade/A')
+          .auth(USER, PASS)
+          .expect(200, function(err, res){
+            res.body.length.should.equal(0);
+            report_error(err, res, done);
+          });
+      },100);
+    });
+  });
+
+<<<<<<< HEAD
 describe("1 bid, 1 ask - perfect match:", function() {
   before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_ask('BBB',100,100,true,done) } );
@@ -79,24 +82,54 @@ describe("1 bid, 1 ask - perfect match:", function() {
           res.body[0].buyer.should.equal('Mr White');
           report_error(err, res, done);
         });
-    },100);
+      },100);
+    });
+  });
+
+  describe("2 bid, 1 ask - mismatch quantity:", function() {
+    before( function(done) { post_bid('BBC',100,40,false,done) } );
+    before( function(done) { post_bid('BBC',100,60,false,done) } );
+    before( function(done) { post_ask('BBC',100,100,false,done) } );
+
+    it ('should run the tick and have 2 trades and no remaining bids/asks',function(done) {
+      tick.execute();
+      setTimeout(function(){
+        request(app).get('/trade/BBC')
+          .auth(USER,PASS)
+          .expect(200, function(err, res) {
+            res.body.length.should.equal(2);
+            report_error(err, res, done);
+          });
+      },100);
+    });
   });
 });
 
-describe("2 bid, 1 ask - mismatch quantity:", function() {
-  before( function(done) { post_bid('BBC',100,40,true,done) } );
-  before( function(done) { post_bid('BBC',100,60,true,done) } );
-  before( function(done) { post_ask('BBC',100,100,true,done) } );
+describe("Scenarios - Price Affecting", function() {
+  it ('should fucking work');
+  it ('should run the tick and have 1 trade and no remaining bids/asks');
 
+//describe("1 bid, 2 ask - mismatch quantity:", function() { });
+//describe(" bid,  ask - mismatch quantity:", function() { });
+//describe(" bid,  ask - match quantity:", function() { });
 
-  it ('should run the tick and have 2 trades and no remaining bids/asks',function(done) {
-    tick.execute();
-    setTimeout(function(){
-      db.Trade.findAll({ where: {symbol: 'BBC'} })
-                .success(function(results) {
-                  results.length.should.equal(2);
-                });
-    },100);
-    done();
+  describe("1 bid, 1 ask, matching quantities", function() {
+    before( function(done) { post_bid('FFFF',100,100,true,done) } );
+    before( function(done) { post_ask('FFFF',100,100,true,done) } );
+
+    it ('should run the tick and have 1 trade and no remaining bids/asks', function(done) {
+      tick.execute();
+      setTimeout(function(){
+        request(app).get('/trade/FFFF')
+          .auth(USER, PASS)
+          .expect(200, function(err, res){
+            res.body.length.should.equal(1);
+            res.body[0].symbol.should.equal('FFFF');
+            res.body[0].buyer.should.equal('Mr White');
+            res.body[0].quantity.should.equal(100);
+            report_error(err, res, done);
+          });
+      },100);
+    });
   });
 });
