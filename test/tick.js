@@ -59,7 +59,6 @@ describe("Scenarios - Non Price Affecting", function() {
     });
   });
 
-<<<<<<< HEAD
 describe("1 bid, 1 ask - perfect match:", function() {
   before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_ask('BBB',100,100,true,done) } );
