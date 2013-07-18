@@ -108,18 +108,13 @@ var nextMatch = function(now, symbol){
     .success(function(results){
       var bid = results[0];
       var ask = results[1];
-      console.log(symbol);
-      //console.log(bid.values);
-      //console.log(ask.values);
 
       if (bid && ask){
         if (bid.values.price_actual >= ask.values.price_actual){
-          console.log("match");
           // set bid actual price to ask actual price
           bid.price_actual = ask.values.price_actual;
 
           if (bid.values.quantity > ask.values.quantity){
-            console.log("bid qty higher");
             //create new bid order and update this bid and ask
             var new_bid_qty = bid.values.quantity - ask.values.quantity;
             GAME.db.Bid.create({
@@ -132,12 +127,10 @@ var nextMatch = function(now, symbol){
             }).success(function(newbid){
               bid.quantity = ask.values.quantity;
               createTrade(bid, ask, function(){
-                console.log("CALLBACK!");
                 nextMatch(now, symbol);
               });
             });
           } else if (bid.values.quantity < ask.values.quantity){
-            console.log("ask qty higher");
             //create new ask order and update this ask
             var new_ask_qty = ask.values.quantity - bid.values.quantity;
             GAME.db.Ask.create({
@@ -150,19 +143,17 @@ var nextMatch = function(now, symbol){
             }).success(function(newask){
               ask.quantity = bid.values.quantity;
               createTrade(bid, ask, function(){
-                console.log("CALLBACK!");
                 nextMatch(now, symbol);
               });
             });
           } else {
-            console.log("identical");
             // create trade
             createTrade(bid, ask, function(){
-              console.log("CALLBACK!");
               nextMatch(now, symbol);
             });
           }
         } else {
+          // do nothing
           console.log("positive spread, no match");
         }
 
@@ -186,11 +177,11 @@ var createTrade = function(bid, ask, callback){
     seller: ask.values.seller,
     ask: ask.values.id
   }).success(function(trade){
-    console.log("trade created");
+    //console.log("trade created");
     bid.save().success(function(bid){
-      console.log("bid saved");
+      //console.log("bid saved");
       ask.save().success(function(ask){
-        console.log("ask saved");
+        //console.log("ask saved");
         if (callback){ callback(); }
       });
     });
