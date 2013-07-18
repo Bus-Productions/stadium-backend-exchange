@@ -71,14 +71,14 @@ describe("Scenario1", function() {
   it ('should run the tick and have one 4 trades',function(done) {
     tick.execute();
     setTimeout(function(){
-      request(app).get('/trade/AAA')
+      request(app).get('/trade/BBB')
         .auth(USER, PASS)
         .expect(200, function(err, res){
-          console.log(res.body.length);
-          //res.body[1].symbol.should.equal('AAA');
+          res.body[0].symbol.should.equal('BBB');
+          res.body[1].symbol.should.equal('BBB');
           //res.body[1].buyer.should.equal('Mr White');
           //res.body.seller.should.equal('StadiumAPP');
-          res.body.length.should.equal(4);
+          res.body.length.should.equal(2);
           report_error(err, res, done);
         });
     },100);
