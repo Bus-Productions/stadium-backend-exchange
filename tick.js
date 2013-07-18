@@ -46,32 +46,11 @@ var pretick = function(now, symbols, callback){
           //console.log(bids);
           //console.log(asks);
 
-          // add price affecting bid/ask quantities
-          var bid_q_pa = 0,
-              bid_q = 0,
-              ask_q = 0,
-              ask_q_pa = 0;
-          for (var b=0;b<bids.length;b++){
-            //console.log(bids[b].values);
-            bid_q += bids[b].values.quantity;
-            if (bids[b].values.price_affecting) { bid_q_pa += bids[b].values.quantity; }
-          }
-          for (var a=0;a<asks.length;a++){
-            //console.log(asks[a].values);
-            ask_q += asks[a].values.quantity;
-            if (asks[a].values.price_affecting) { ask_q_pa += asks[a].values.quantity; }
-          }
-          console.log(bid_q_pa);
-          console.log(ask_q_pa);
-          console.log(bid_q);
-          console.log(ask_q);
-
           // get price change modifiers
-          var bid_f = 1,
-              ask_f = 1;
-
-          // once everything is done, call callback with THIS symbol
-          if (callback) { callback(now, this_symbol); }
+          muckMarket(bids, asks, function(){
+            // once everything is done, call callback with THIS symbol
+            if (callback) { callback(now, this_symbol); }
+          });
 
         })
         .error(function(err){
@@ -80,7 +59,59 @@ var pretick = function(now, symbols, callback){
 
     })();
   }
+}
 
+var muckMarket = function(bids, asks, callback){
+  // add price affecting bid/ask quantities
+  var bid_q_pa = 0,
+      bid_q = 0,
+      ask_q = 0,
+      ask_q_pa = 0;
+  for (var b=0;b<bids.length;b++){
+    //console.log(bids[b].values);
+    bid_q += bids[b].values.quantity;
+    if (bids[b].values.price_affecting) { bid_q_pa += bids[b].values.quantity; }
+  }
+  for (var a=0;a<asks.length;a++){
+    //console.log(asks[a].values);
+    ask_q += asks[a].values.quantity;
+    if (asks[a].values.price_affecting) { ask_q_pa += asks[a].values.quantity; }
+  }
+  console.log(bid_q_pa);
+  console.log(ask_q_pa);
+  console.log(bid_q);
+  console.log(ask_q);
+
+  GAME.db.Symbol.find({ where: { symbol: bids[0].values.symbol }}).success(function(symbol){
+    var factor = ((bid_q_pa - ask_q_pa) / symbol.issued) + 1;
+    console.log("factor", factor);
+    var new_price = symbol.price * factor;
+    console.log("new price", new_price);
+
+    symbol.price = new_price;
+    symbol.issued = symbol.issued + (bid_q - ask_q);
+
+    var chainer = new GAME.db.Sequelize.Utils.QueryChainer;
+    chainer.add(symbol.save());
+    for (var b=0;b<bids.length;b++){
+      bids[b].price_actual = new_price;
+      chainer.add(bids[b].save());
+    }
+    for (var a=0;a<asks.length;a++){
+      asks[a].price_actual = new_price;
+      chainer.add(asks[a].save());
+    }
+    chainer.run().success(function(results){
+      // create matching bids and asks for all bids and asks
+      if (callback) { callback(); }
+    }).error(function(err){
+      console.log(err);
+    });
+
+
+  }).error(function(err){
+    console.log(err);
+  });
 }
 
 var execute = function(){
