@@ -56,15 +56,22 @@ describe("Scenario1", function() {
   before( function(done) { post_ask('CCC',110,90,true,done) } );
   //before( function(done) { post_ask('CCC',100,95,false,done) } );
 
-  it ('should run the tick and have one 1 trade',function(done) {
-    tick.execute();
+  it ('should run the tick and have one 4 trades',function(done) {
+    //tick.execute();
+    tick.prepare(function(now, symbols){
+      tick.pretick(now, symbols, function(now, symbol){
+        tick.nextMatch(now, symbol);
+      });
+    });
     setTimeout(function(){
       request(app).get('/trade/AAA')
         .auth(USER, PASS)
         .expect(200, function(err, res){
-          res.body.symbol.should.equal('AAA');
-          res.body.buyer.should.equal('Mr White');
+          console.log(res.body.length);
+          //res.body[1].symbol.should.equal('AAA');
+          //res.body[1].buyer.should.equal('Mr White');
           //res.body.seller.should.equal('StadiumAPP');
+          res.body.length.should.equal(4);
           report_error(err, res, done);
         });
     },1000);
