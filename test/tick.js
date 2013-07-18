@@ -57,12 +57,7 @@ describe("Scenario1", function() {
   //before( function(done) { post_ask('CCC',100,95,false,done) } );
 
   it ('should run the tick and have one 4 trades',function(done) {
-    //tick.execute();
-    tick.prepare(function(now, symbols){
-      tick.pretick(now, symbols, function(now, symbol){
-        tick.nextMatch(now, symbol);
-      });
-    });
+    tick.execute();
     setTimeout(function(){
       request(app).get('/trade/AAA')
         .auth(USER, PASS)
@@ -74,7 +69,7 @@ describe("Scenario1", function() {
           res.body.length.should.equal(4);
           report_error(err, res, done);
         });
-    },1000);
+    },100);
   });
 
 });

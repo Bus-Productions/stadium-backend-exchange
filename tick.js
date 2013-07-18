@@ -8,7 +8,7 @@ GAME.db = require('./models/models.js');
 // add interval
 //
 
-exports.prepare = function(callback){
+var prepare = function(callback){
   var now = new Date();
 
   GAME.db.sequelize.query('SELECT DISTINCT symbol FROM "Bids" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+'\' UNION SELECT DISTINCT symbol FROM "Asks" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+"'").success(function(symbols){
@@ -19,7 +19,7 @@ exports.prepare = function(callback){
 
 }
 
-exports.pretick = function(now, symbols, callback){
+var pretick = function(now, symbols, callback){
 
   for (var i=0;i<symbols.length;i++){
     (function(){ //anon function necessary to close this_symbol
@@ -83,19 +83,13 @@ exports.pretick = function(now, symbols, callback){
 
 }
 
-/*
-exports.execute = function(){
-  var now = new Date();
-
-  GAME.db.sequelize.query('SELECT DISTINCT symbol FROM "Bids" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+'\' UNION SELECT DISTINCT symbol FROM "Asks" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+"'").success(function(symbols){
-    for (var i=0;i<symbols.length;i++){
-      nextMatch(now,symbols[i].symbol);
-    }
-  }).error(function(err){
-    console.log(err);
+var execute = function(){
+  prepare(function(now, symbols){
+    pretick(now, symbols, function(now, symbol){
+      nextMatch(now, symbol);
+    });
   });
 }
-*/
 
 
 var nextMatch = function(now, symbol){
@@ -172,7 +166,6 @@ var nextMatch = function(now, symbol){
     });
 }
 
-exports.nextMatch = nextMatch;
 
 // bid and ask instance MUST already be matched in price and quantity
 var createTrade = function(bid, ask, callback){
@@ -199,3 +192,8 @@ var createTrade = function(bid, ask, callback){
     console.log(err);
   });
 }
+
+exports.prepare = prepare;
+exports.pretick = pretick;
+exports.execute = execute;
+exports.nextMatch = nextMatch;
