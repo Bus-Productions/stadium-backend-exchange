@@ -5,8 +5,14 @@
  */
 
 exports.get_trades = function(req, res){
-  if (req.params.trade){
-    GAME.db.Trade.findAll({where: {symbol: req.params.trade}}).success(function(trades){
+  if (req.params.symbol){
+    var query = {};
+    if (req.params.since) {
+      query = {where: ["symbol = ? AND created_at >= ?", req.params.symbol, req.params.since]};
+    } else {
+      query = {where: {symbol: req.params.symbol}};
+    }
+    GAME.db.Trade.findAll(query).success(function(trades){
       if (trades){
         var trade_response = [];
         for (var i=0;i<trades.length;i++){

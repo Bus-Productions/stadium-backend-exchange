@@ -68,7 +68,7 @@ describe("Scenario1", function() {
       .expect(201,done);
   });
 
-  it ('should run the tick and have one 4 trades',function(done) {
+  it ('should run the tick and have four trades',function(done) {
     tick.execute();
     setTimeout(function(){
       request(app).get('/trade/AAA')

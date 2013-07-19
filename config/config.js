@@ -14,6 +14,7 @@ exports.config = function(){
       dbport: 5432,
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
+      agent_name: 'StadiumEX',
       host: 'localhost',
       port: 4200,
       method: 'POST'
@@ -29,6 +30,7 @@ exports.config = function(){
       dbport: 5432,
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
+      agent_name: 'StadiumEX',
       host: 'localhost',
       port: 3000,
       method: 'POST'
@@ -45,6 +47,7 @@ exports.config = function(){
       dbport: match[4],
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
+      agent_name: 'StadiumEX',
       host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
@@ -60,6 +63,7 @@ exports.config = function(){
       dbport: 5432,
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
+      agent_name: 'StadiumEX',
       host: 'some.com',
       port: process.env.PORT,
       method: 'POST'

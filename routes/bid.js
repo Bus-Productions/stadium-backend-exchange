@@ -8,16 +8,22 @@ exports.create_bid = function(req, res){
   var p = req.body;
 
   if (p.symbol && p.price && p.quantity && p.buyer){
-    var pa = (typeof p.price_affecting != 'undefined') ? p.price_affecting : true;
-    GAME.db.Bid.create({
-      symbol: p.symbol,
-      price_ordered: p.price,
-      price_actual: p.price,
-      price_affecting: pa,
-      quantity: p.quantity,
-      buyer: p.buyer
-    }).success(function(bid){
-      res.send(201, bid.values);
+    GAME.db.Symbol.find({ where: {symbol: p.symbol}}).success(function(symbol){
+      if (symbol){
+        var pa = (typeof p.price_affecting != 'undefined') ? p.price_affecting : true;
+        GAME.db.Bid.create({
+          symbol: p.symbol,
+          price_ordered: p.price,
+          price_actual: p.price,
+          price_affecting: pa,
+          quantity: p.quantity,
+          buyer: p.buyer
+        }).success(function(bid){
+          res.send(201, bid.values);
+        });
+      } else {
+        res.send(400, 'Symbol: '+ p.symbol +' does not exist');
+      }
     });
   } else {
     var emessage = 'You did not send the following parameters: ';

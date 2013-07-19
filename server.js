@@ -52,7 +52,7 @@ app.post('/symbol', passport.authenticate('basic', { session: false }), symbol.c
 app.get('/symbol/:symbol', passport.authenticate('basic', { session: false }), symbol.get_symbol);
 
 // trade routes
-app.get('/trade/:trade', passport.authenticate('basic', { session: false }), trade.get_trades);
+app.get('/trade/:symbol', passport.authenticate('basic', { session: false }), trade.get_trades);
 
 
 // utility routes

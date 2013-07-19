@@ -8,14 +8,16 @@ GAME.db = require('./models/models.js');
 // add interval
 //
 
+var dbError = function(err){
+  console.log(err);
+}
+
 var prepare = function(callback){
   var now = new Date();
 
   GAME.db.sequelize.query('SELECT DISTINCT symbol FROM "Bids" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+'\' UNION SELECT DISTINCT symbol FROM "Asks" WHERE NOT matched AND order_placed_at <= \''+now.toUTCString()+"'").success(function(symbols){
     if (callback) { callback(now, symbols); }
-  }).error(function(err){
-    console.log(err);
-  });
+  }).error(dbError);
 
 }
 
@@ -29,14 +31,10 @@ var pretick = function(now, symbols, callback){
 
       chainer
         .add(
-          GAME.db.Bid.findAll({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", this_symbol, now.toUTCString()]}).error(function(err){
-            console.log(err);
-          })
+          GAME.db.Bid.findAll({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", this_symbol, now.toUTCString()]}).error(dbError)
           )
         .add(
-          GAME.db.Ask.findAll({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", this_symbol, now.toUTCString()]}).error(function(err){
-            console.log(err);
-          })
+          GAME.db.Ask.findAll({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", this_symbol, now.toUTCString()]}).error(dbError)
           )
         .run()
         .success(function(results){
@@ -53,9 +51,7 @@ var pretick = function(now, symbols, callback){
           });
 
         })
-        .error(function(err){
-          console.log(err);
-        });
+        .error(dbError);
 
     })();
   }
@@ -77,10 +73,10 @@ var muckMarket = function(bids, asks, callback){
     ask_q += asks[a].values.quantity;
     if (asks[a].values.price_affecting) { ask_q_pa += asks[a].values.quantity; }
   }
-  console.log(bid_q_pa);
-  console.log(ask_q_pa);
-  console.log(bid_q);
-  console.log(ask_q);
+  //console.log(bid_q_pa);
+  //console.log(ask_q_pa);
+  //console.log(bid_q);
+  //console.log(ask_q);
 
   GAME.db.Symbol.find({ where: { symbol: bids[0].values.symbol }}).success(function(symbol){
     var factor = ((bid_q_pa - ask_q_pa) / symbol.issued) + 1;
@@ -103,15 +99,38 @@ var muckMarket = function(bids, asks, callback){
     }
     chainer.run().success(function(results){
       // create matching bids and asks for all bids and asks
-      if (callback) { callback(); }
-    }).error(function(err){
-      console.log(err);
-    });
+      var newchainer = new GAME.db.Sequelize.Utils.QueryChainer;
+      for (var b=0;b<bids.length;b++){
+        newchainer.add(
+          GAME.db.Ask.create({
+            symbol: bids[b].symbol,
+            price_ordered: bids[b].price_ordered,
+            price_actual: bids[b].price_actual,
+            price_affecting: false,
+            quantity: bids[b].quantity,
+            seller: GAME.config.agent_name
+          })
+          );
+      }
+      for (var a=0;a<asks.length;a++){
+        newchainer.add(
+          GAME.db.Bid.create({
+            symbol: asks[a].symbol,
+            price_ordered: asks[a].price_ordered,
+            price_actual: asks[a].price_actual,
+            price_affecting: false,
+            quantity: asks[a].quantity,
+            buyer: GAME.config.agent_name
+          })
+          );
+      }
+      newchainer.run().success(function(results){
+        if (callback) { callback(); }
+      }).error(dbError);
+    }).error(dbError);
 
 
-  }).error(function(err){
-    console.log(err);
-  });
+  }).error(dbError);
 }
 
 var execute = function(){
@@ -128,14 +147,10 @@ var nextMatch = function(now, symbol){
 
   chainer
     .add(
-      GAME.db.Bid.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual DESC, order_placed_at DESC, quantity DESC"}).error(function(err){
-        console.log(err);
-      })
+      GAME.db.Bid.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual DESC, order_placed_at DESC, quantity DESC"}).error(dbError)
       )
     .add(
-      GAME.db.Ask.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual ASC, order_placed_at DESC, quantity DESC"}).error(function(err){
-        console.log(err);
-      })
+      GAME.db.Ask.find({ where: ["symbol = ? AND NOT matched AND order_placed_at <= ?", symbol, now.toUTCString()], order: "price_actual ASC, order_placed_at DESC, quantity DESC"}).error(dbError)
       )
     .run()
     .success(function(results){
@@ -192,9 +207,7 @@ var nextMatch = function(now, symbol){
 
       }
     })
-    .error(function(err){
-      console.log(err);
-    });
+    .error(dbError);
 }
 
 
@@ -219,9 +232,7 @@ var createTrade = function(bid, ask, callback){
         if (callback){ callback(); }
       });
     });
-  }).error(function(err){
-    console.log(err);
-  });
+  }).error(dbError);
 }
 
 exports.prepare = prepare;
