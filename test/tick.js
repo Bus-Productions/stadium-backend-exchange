@@ -34,6 +34,13 @@ var post_ask = function(symbol,price,qty,pa,done) {
     .expect(201,done);
 };
 
+var post_symbol = function(symbol,price,issued,done) {
+  request(app).post('/symbol')
+    .send({ symbol: symbol, price: price, issued: issued})
+    .auth(USER, PASS)
+    .expect(201,done);
+};
+
 // surrounds
 before(function() {
   //console.log("Initializing the application");
@@ -60,15 +67,10 @@ describe("Scenarios - Non Price Affecting", function() {
   });
 
 describe("1 bid, 1 ask - perfect match:", function() {
+  before( function(done) { post_symbol('BBB', 100, 1000, done) } );
+  before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_bid('BBB',100,100,true,done) } );
   before( function(done) { post_ask('BBB',100,100,true,done) } );
-
-  before( function(done) {
-    request(app).post('/symbol')
-      .send({ symbol: 'BBB', price: 100, issued: 1000 })
-      .auth(USER, PASS)
-      .expect(201,done);
-  });
 
   it ('should run the tick and have one trade',function(done) {
     tick.execute();
@@ -86,6 +88,7 @@ describe("1 bid, 1 ask - perfect match:", function() {
   });
 
   describe("2 bid, 1 ask - mismatch quantity:", function() {
+    before( function(done) { post_symbol('BBC', 100, 1000, done) } );
     before( function(done) { post_bid('BBC',100,40,false,done) } );
     before( function(done) { post_bid('BBC',100,60,false,done) } );
     before( function(done) { post_ask('BBC',100,100,false,done) } );
@@ -113,6 +116,7 @@ describe("Scenarios - Price Affecting", function() {
 //describe(" bid,  ask - match quantity:", function() { });
 
   describe("1 bid, 1 ask, matching quantities", function() {
+    before( function(done) { post_symbol('FFFF', 100, 1000, done) } );
     before( function(done) { post_bid('FFFF',100,100,true,done) } );
     before( function(done) { post_ask('FFFF',100,100,true,done) } );
 
@@ -126,7 +130,23 @@ describe("Scenarios - Price Affecting", function() {
             res.body[0].symbol.should.equal('FFFF');
             res.body[0].buyer.should.equal('Mr White');
             res.body[0].quantity.should.equal(100);
-            report_error(err, res, done);
+            db.Bid.findAll({where: {symbol: 'FFFF'}})
+              .success(function(bid) {
+                bid.length.should.equal(1);
+                bid[0].matched.should.equal(true);
+                db.Ask.findAll({where: {symbol: 'FFFF'}})
+                  .success(function(ask) {
+                    ask.length.should.equal(1);
+                    ask[0].matched.should.equal(true);
+                    report_error( err, res, done);
+                  }).error(function(err) {
+                    console.log(ask);
+                    report_error( err, res, done);
+                  });
+              }).error(function(err) {
+                console.log(bid);
+                report_error( err, res, done);
+              });
           });
       },100);
     });
