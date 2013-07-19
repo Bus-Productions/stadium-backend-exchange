@@ -45,7 +45,7 @@ var pretick = function(now, symbols, callback){
           //console.log(asks);
 
           // get price change modifiers
-          muckMarket(bids, asks, function(){
+          muckMarket(this_symbol, bids, asks, function(){
             // once everything is done, call callback with THIS symbol
             if (callback) { callback(now, this_symbol); }
           });
@@ -57,7 +57,7 @@ var pretick = function(now, symbols, callback){
   }
 }
 
-var muckMarket = function(bids, asks, callback){
+var muckMarket = function(symbol, bids, asks, callback){
   // add price affecting bid/ask quantities
   var bid_q_pa = 0,
       bid_q = 0,
@@ -78,7 +78,7 @@ var muckMarket = function(bids, asks, callback){
   //console.log(bid_q);
   //console.log(ask_q);
 
-  GAME.db.Symbol.find({ where: { symbol: bids[0].values.symbol }}).success(function(symbol){
+  GAME.db.Symbol.find({ where: { symbol: symbol }}).success(function(symbol){
     var factor = ((bid_q_pa - ask_q_pa) / symbol.issued) + 1;
     //console.log("factor", factor);
     var new_price = symbol.price * factor;
