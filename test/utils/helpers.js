@@ -21,17 +21,16 @@ exports.post_symbol = function(symbol,price,issued,done) {
     .expect(201,done);
 };
 
-
-exports.post_bid = function(symbol,pa,done) {
+exports.post_bid = function(symbol,price,qty,pa,done) {
   request(app).post('/bid')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, buyer: 'Mr White', price_affecting: pa })
+    .send({ symbol: symbol, price: price, quantity: qty, buyer: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };
 
-exports.post_ask = function(symbol,pa,done) {
+exports.post_ask = function(symbol,price,qty,pa,done) {
   request(app).post('/ask')
-    .send({ symbol: symbol, price: 100.0, quantity: 100, seller: 'Mr White', price_affecting: pa })
+    .send({ symbol: symbol, price: price, quantity: qty, seller: 'Mr White', price_affecting: pa })
     .auth(USER, PASS)
     .expect(201,done);
 };

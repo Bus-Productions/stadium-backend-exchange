@@ -9,18 +9,11 @@ var should = require('chai').should(),
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
 
-var post_symbol = function(symbol,price,issued,done) {
-  request(app).post('/symbol')
-    .send({ symbol: symbol, price: price, issued: issued})
-    .auth(USER, PASS)
-    .expect(201,done);
-};
-
 describe("Scenarios - Non Price Affecting", function() {
 
   describe("0 bid, 0 ask - no trade:", function() {
     it ('should run the tick and have no trades',function(done) {
-      //tick.execute();
+      tick.execute();
       setTimeout(function(){
         request(app).get('/trade/A')
           .auth(USER, PASS)
@@ -33,7 +26,7 @@ describe("Scenarios - Non Price Affecting", function() {
   });
 
 describe("1 bid, 1 ask - perfect match:", function() {
-  before( function(done) { post_symbol('BBB',100,1000,done) } );
+  before( function(done) { helpers.post_symbol('BBB',100,1000,done) } );
   before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
   before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
   before( function(done) { helpers.post_ask('BBB',100,100,true,done) } );
