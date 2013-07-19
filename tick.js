@@ -21,7 +21,7 @@ var prepare = function(callback){
 
 }
 
-var pretick = function(now, symbols, callback){
+var pretick = function(now, symbols, middleware, callback){
 
   for (var i=0;i<symbols.length;i++){
     (function(){ //anon function necessary to close this_symbol
@@ -44,11 +44,15 @@ var pretick = function(now, symbols, callback){
           //console.log(bids);
           //console.log(asks);
 
-          // get price change modifiers
-          muckMarket(this_symbol, bids, asks, function(){
-            // once everything is done, call callback with THIS symbol
+          // run middleware
+          if (middleware){
+            middleware(this_symbol, bids, asks, function(){
+              // once everything is done, call callback with THIS symbol
+              if (callback) { callback(now, this_symbol); }
+            });
+          } else {
             if (callback) { callback(now, this_symbol); }
-          });
+          }
 
         })
         .error(dbError);
@@ -133,9 +137,9 @@ var muckMarket = function(symbol, bids, asks, callback){
   }).error(dbError);
 }
 
-var execute = function(){
+var execute = function(middleware){
   prepare(function(now, symbols){
-    pretick(now, symbols, function(now, symbol){
+    pretick(now, symbols, middleware, function(now, symbol){
       nextMatch(now, symbol);
     });
   });
@@ -239,3 +243,4 @@ exports.prepare = prepare;
 exports.pretick = pretick;
 exports.execute = execute;
 exports.nextMatch = nextMatch;
+exports.muckMarket = muckMarket;

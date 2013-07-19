@@ -25,23 +25,23 @@ describe("Scenarios - Non Price Affecting", function() {
     });
   });
 
-describe("1 bid, 1 ask - perfect match:", function() {
-  before( function(done) { helpers.post_symbol('BBB',100,1000,done) } );
-  before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
-  before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
-  before( function(done) { helpers.post_ask('BBB',100,100,true,done) } );
+  describe("1 bid, 1 ask - perfect match:", function() {
+    before( function(done) { helpers.post_symbol('BBB',100,1000,done) } );
+    before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
+    before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
+    before( function(done) { helpers.post_ask('BBB',100,100,true,done) } );
 
-  it ('should run the tick and have one trade',function(done) {
-    tick.execute();
-    setTimeout(function(){
-      request(app).get('/trade/BBB')
-        .auth(USER, PASS)
-        .expect(200, function(err, res){
-          res.body.length.should.equal(1);
-          res.body[0].symbol.should.equal('BBB');
-          res.body[0].buyer.should.equal('Mr White');
-          helpers.report_error(err, res, done);
-        });
+    it ('should run the tick and have one trade',function(done) {
+      tick.execute();
+      setTimeout(function(){
+        request(app).get('/trade/BBB')
+          .auth(USER, PASS)
+          .expect(200, function(err, res){
+            res.body.length.should.equal(1);
+            res.body[0].symbol.should.equal('BBB');
+            res.body[0].buyer.should.equal('Mr White');
+            helpers.report_error(err, res, done);
+          });
       },100);
     });
   });
@@ -110,4 +110,28 @@ describe("Scenarios - Price Affecting", function() {
       },100);
     });
   });
+});
+
+describe("Scenarios - Muck Market", function() {
+  it ('should run the tick and have 6 trades and no remaining bids/asks');
+
+  describe("2 bid, 1 ask - mismatch quantity:", function() {
+    before( function(done) { helpers.post_symbol('MMM', 100, 1000, done) } );
+    before( function(done) { helpers.post_bid('MMM',100,40,false,done) } );
+    before( function(done) { helpers.post_bid('MMM',100,60,false,done) } );
+    before( function(done) { helpers.post_ask('MMM',100,100,false,done) } );
+
+    it ('should run the tick and have 3 trades and no remaining bids/asks',function(done) {
+      tick.execute(tick.muckMarket);
+      setTimeout(function(){
+        request(app).get('/trade/MMM')
+          .auth(USER,PASS)
+          .expect(200, function(err, res) {
+            res.body.length.should.equal(3);
+            helpers.report_error(err, res, done);
+          });
+      },100);
+    });
+  });
+
 });
