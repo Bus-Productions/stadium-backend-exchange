@@ -40,7 +40,7 @@ var pretick = function(now, symbols, callback){
         .success(function(results){
           var bids = results[0];
           var asks = results[1];
-          console.log(this_symbol);
+          //console.log(this_symbol);
           //console.log(bids);
           //console.log(asks);
 
@@ -80,9 +80,9 @@ var muckMarket = function(bids, asks, callback){
 
   GAME.db.Symbol.find({ where: { symbol: bids[0].values.symbol }}).success(function(symbol){
     var factor = ((bid_q_pa - ask_q_pa) / symbol.issued) + 1;
-    console.log("factor", factor);
+    //console.log("factor", factor);
     var new_price = symbol.price * factor;
-    console.log("new price", new_price);
+    //console.log("new price", new_price);
 
     symbol.price = new_price;
     symbol.issued = symbol.issued + (bid_q - ask_q);
@@ -202,7 +202,7 @@ var nextMatch = function(now, symbol){
           }
         } else {
           // do nothing
-          console.log("positive spread, no match");
+          //console.log("positive spread, no match");
         }
 
       }
