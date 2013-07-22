@@ -41,9 +41,6 @@ var pretick = function(now, symbols, middleware, callback){
         .success(function(results){
           var bids = results[0];
           var asks = results[1];
-          //console.log(this_symbol);
-          //console.log(bids);
-          //console.log(asks);
 
           // the middleware function must accept:
           // the current symbol, an array of bid objects, an array of ask objects, and a callback
@@ -80,16 +77,10 @@ var muckMarket = function(symbol, bids, asks, callback){
     ask_q += asks[a].values.quantity;
     if (asks[a].values.price_affecting) { ask_q_pa += asks[a].values.quantity; }
   }
-  //console.log(bid_q_pa);
-  //console.log(ask_q_pa);
-  //console.log(bid_q);
-  //console.log(ask_q);
 
   GAME.db.Symbol.find({ where: { symbol: symbol }}).success(function(symbol){
     var factor = ((bid_q_pa - ask_q_pa) / symbol.issued) + 1;
-    //console.log("factor", factor);
     var new_price = symbol.price * factor;
-    //console.log("new price", new_price);
 
     symbol.price = new_price;
     symbol.issued = symbol.issued + (bid_q - ask_q);
