@@ -45,6 +45,8 @@ var pretick = function(now, symbols, middleware, callback){
           //console.log(bids);
           //console.log(asks);
 
+          // the middleware function must accept:
+          // the current symbol, an array of bid objects, an array of ask objects, and a callback
           // run middleware
           if (middleware){
             middleware(this_symbol, bids, asks, function(){

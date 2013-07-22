@@ -9,6 +9,19 @@ var should = require('chai').should(),
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
 
+var testmodel = function(model, symbol, length, matched, next) {
+    model.findAll({where: {symbol: symbol}})
+      .success(function(result) {
+        result.length.should.equal(length);
+        result[0].matched.should.equal(matched);
+        next();
+      })
+      .error(function(err) {
+        console.log(err)
+        next(err);
+      });
+}
+
 describe("Scenarios - Non Price Affecting", function() {
 
   describe("0 bid, 0 ask - no trade:", function() {
@@ -25,11 +38,10 @@ describe("Scenarios - Non Price Affecting", function() {
     });
   });
 
-  describe("1 bid, 1 ask - perfect match:", function() {
-    before( function(done) { helpers.post_symbol('BBB',100,1000,done) } );
-    before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
-    before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
-    before( function(done) { helpers.post_ask('BBB',100,100,true,done) } );
+describe("1 bid, 1 ask - perfect match:", function() {
+  before( function(done) { helpers.post_symbol('BBB',100,1000,done) } );
+  before( function(done) { helpers.post_bid('BBB',100,100,true,done) } );
+  before( function(done) { helpers.post_ask('BBB',100,100,true,done) } );
 
     it ('should run the tick and have one trade',function(done) {
       tick.execute();
@@ -89,22 +101,10 @@ describe("Scenarios - Price Affecting", function() {
             res.body[0].symbol.should.equal('FFFF');
             res.body[0].buyer.should.equal('Mr White');
             res.body[0].quantity.should.equal(100);
-            db.Bid.findAll({where: {symbol: 'FFFF'}})
-              .success(function(bid) {
-                bid.length.should.equal(1);
-                bid[0].matched.should.equal(true);
-                db.Ask.findAll({where: {symbol: 'FFFF'}})
-                  .success(function(ask) {
-                    ask.length.should.equal(1);
-                    ask[0].matched.should.equal(true);
-                    helpers.report_error( err, res, done);
-                  }).error(function(err) {
-                    console.log(ask);
+            testmodel(db.Bid, "FFFF", 1, true, function() {
+              testmodel(db.Ask, "FFFF", 1, true, function() {
                     helpers.report_error( err, res, done);
                   });
-              }).error(function(err) {
-                console.log(bid);
-                helpers.report_error( err, res, done);
               });
           });
       },100);
