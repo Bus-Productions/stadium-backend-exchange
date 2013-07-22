@@ -1,7 +1,6 @@
 var should = require('chai').should(),
     request = require('supertest'),
-    app  = require('../../server'),
-    tick = require('../../tick');
+    app  = require('../../server');
 
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';

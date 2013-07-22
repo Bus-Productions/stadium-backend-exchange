@@ -4,7 +4,7 @@ var should = require('chai').should(),
     helpers = require('./utils/helpers.js'),
     request = require('supertest'),
     app  = require('../server'),
-    tick = require('../tick');
+    tick = require('../lib/tick');
 
 var USER = 'admin@stadiumexchange.com',
     PASS = 'game2013';
