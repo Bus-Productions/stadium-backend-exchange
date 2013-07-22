@@ -46,7 +46,7 @@ heroku run node scripts/make_admin_user.js
 The API uses HTTP Basic Authentication to provide security.
 
 ###Bids
-You can `POST` and `GET` a Bid.
+You can `POST` and `GET` a Bid. The bid symbol must resolve to an existing symbol created with the `Symbol` API resource.
 
 ```
 curl -i -X POST \
@@ -71,6 +71,7 @@ Your response will be:
 ```
 ```
 ###Asks
+You can `POST` and `GET` an Ask. The ask symbol must resolve to an existing symbol created with the `Symbol` API resource.
 
 ```
 curl -i -X POST \
