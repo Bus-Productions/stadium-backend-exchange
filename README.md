@@ -118,7 +118,7 @@ Your response will be:
 curl -i -X GET \
   -u <user>:<password>  \
   -H "Content-Type: application/json" \
-  https://www.stadiumgameapp.com/symbol/<symbol_id>
+  https://www.stadiumgameapp.com/symbol/<symbol_name>
 ```
 
 Your response will be:
@@ -127,4 +127,13 @@ Your response will be:
 ```
 
 ###Trades
+Trades happen after a bid or ask is entered. You can only `GET` a trade from the trade book
+
+```
+curl -i -X GET \
+  -u <user>:<password>  \
+  -H "Content-Type: application/json" \
+  https://www.stadiumgameapp.com/trade
+```
+
 
