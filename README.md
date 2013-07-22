@@ -69,7 +69,8 @@ curl -i -X GET \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price_ordered":100,"price_actual":200,"quantity":100,"buyer":"Mr White","order_placed_at":"2013-07-22T21:49:45.000Z","price_affecting":true,"matched":true,"id":1,"createdAt":"2013-07-22T21:49:45.000Z","updatedAt":"2013-07-22T21:49:47.000Z","deletedAt":null}
 ```
 ###Asks
 You can `POST` and `GET` an Ask. The ask symbol must resolve to an existing symbol created with the `Symbol` API resource.
