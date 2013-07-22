@@ -17,6 +17,7 @@ exports.config = function(){
       agent_name: 'StadiumEX',
       trade_callback: 'https://www.stadiumse.com/trade',
       symbol_callback: 'https://www.stadiumse.com/symbol',
+      tick_speed: 3000,
       host: 'localhost',
       port: 4200,
       method: 'POST'
@@ -35,6 +36,7 @@ exports.config = function(){
       agent_name: 'StadiumEX',
       trade_callback: 'https://www.stadiumse.com/trade',
       symbol_callback: 'https://www.stadiumse.com/symbol',
+      tick_speed: 3000,
       host: 'localhost',
       port: 3000,
       method: 'POST'
@@ -54,6 +56,7 @@ exports.config = function(){
       agent_name: 'StadiumEX',
       trade_callback: 'https://www.stadiumse.com/trade',
       symbol_callback: 'https://www.stadiumse.com/symbol',
+      tick_speed: 3000,
       host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
@@ -72,6 +75,7 @@ exports.config = function(){
       agent_name: 'StadiumEX',
       trade_callback: 'https://www.stadiumse.com/trade',
       symbol_callback: 'https://www.stadiumse.com/symbol',
+      tick_speed: 3000,
       host: 'some.com',
       port: process.env.PORT,
       method: 'POST'
