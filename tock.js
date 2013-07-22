@@ -3,4 +3,5 @@ var tick = require('./lib/tick'),
 
 var timer = setInterval(function(){
   tick.execute(tick.muckMarket);
+  console.log("TICK");
 }, config.tick_speed);
