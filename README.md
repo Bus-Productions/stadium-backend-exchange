@@ -57,7 +57,8 @@ curl -i -X POST \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price_ordered":100,"price_actual":100,"quantity":100,"buyer":"Mr White","order_placed_at":"2013-07-22T21:49:45.000Z","price_affecting":true,"matched":false,"id":1,"createdAt":"2013-07-22T21:49:45.000Z","updatedAt":"2013-07-22T21:49:45.000Z","deletedAt":null}
 ```
 
 ```
@@ -108,7 +109,8 @@ curl -i -X POST \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price":100,"issued":100,"id":1,"createdAt":"2013-07-22T21:49:37.000Z","updatedAt":"2013-07-22T21:49:37.000Z","deletedAt":null}
 ```
 
 
@@ -120,7 +122,8 @@ curl -i -X GET \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price":200,"issued":200,"id":1,"createdAt":"2013-07-22T21:49:37.000Z","updatedAt":"2013-07-22T21:49:47.000Z","deletedAt":null}
 ```
 
 ###Trades
