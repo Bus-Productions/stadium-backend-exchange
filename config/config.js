@@ -15,6 +15,8 @@ exports.config = function(){
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
       agent_name: 'StadiumEX',
+      trade_callback: 'https://www.stadiumse.com/trade',
+      symbol_callback: 'https://www.stadiumse.com/symbol',
       host: 'localhost',
       port: 4200,
       method: 'POST'
@@ -31,6 +33,8 @@ exports.config = function(){
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
       agent_name: 'StadiumEX',
+      trade_callback: 'https://www.stadiumse.com/trade',
+      symbol_callback: 'https://www.stadiumse.com/symbol',
       host: 'localhost',
       port: 3000,
       method: 'POST'
@@ -48,6 +52,8 @@ exports.config = function(){
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
       agent_name: 'StadiumEX',
+      trade_callback: 'https://www.stadiumse.com/trade',
+      symbol_callback: 'https://www.stadiumse.com/symbol',
       host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
@@ -64,6 +70,8 @@ exports.config = function(){
       admin_user: 'admin@stadiumexchange.com',
       admin_pass: 'game2013',
       agent_name: 'StadiumEX',
+      trade_callback: 'https://www.stadiumse.com/trade',
+      symbol_callback: 'https://www.stadiumse.com/symbol',
       host: 'some.com',
       port: process.env.PORT,
       method: 'POST'

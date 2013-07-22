@@ -4,6 +4,7 @@ GAME.config = require('./config/config.js').config();
 
 // set up models
 GAME.db = require('./models/models.js');
+var request = require('superagent');
 
 // add interval
 //
@@ -233,6 +234,20 @@ var createTrade = function(bid, ask, callback){
       //console.log("bid saved");
       ask.save().success(function(ask){
         //console.log("ask saved");
+        request.post(GAME.config.trade_callback).send({
+          key: GAME.config.callback_auth_token,
+          id: trade.id,
+          stock_id: trade.symbol,
+          number_shares: trade.quantity,
+          price: trade.price,
+          buyer: trade.buyer,
+          bid: trade.bid,
+          seller: trade.seller,
+          ask: trade.ask,
+          time: trade.created_at
+        }).end(function(res){
+          console.log(res);
+        });
         if (callback){ callback(); }
       });
     });
