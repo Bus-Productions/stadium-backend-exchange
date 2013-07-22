@@ -50,7 +50,7 @@ You can `POST` and `GET` a Bid.
 
 ```
 curl -i -X POST \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   -d '{ "symbol": "XYZ", "price": 100.0, "quantity": 100, "buyer": "Mr White", "price_affecting": true }' \
   https://www.stadiumgameapp.com/bid
@@ -62,7 +62,7 @@ Your response will be:
 
 ```
 curl -i -X GET \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   https://www.stadiumgameapp.com/bid/<bid_id>
 ```
@@ -74,7 +74,7 @@ Your response will be:
 
 ```
 curl -i -X POST \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   -d '{ "symbol": "XYZ", "price": 100.0, "quantity": 100, "seller": "Mr White", "price_affecting": true }' \
   https://www.stadiumgameapp.com/ask
@@ -87,7 +87,7 @@ Your response will be:
 
 ```
 curl -i -X GET \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   https://www.stadiumgameapp.com/ask/<ask_id>
 ```
@@ -100,7 +100,7 @@ Your response will be:
 
 ```
 curl -i -X POST \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   -d '{ "symbol": "XYZ", "price": 100.0, "issued": 100}' \
   https://www.stadiumgameapp.com/symbol
@@ -113,7 +113,7 @@ Your response will be:
 
 ```
 curl -i -X GET \
-  -u <user>:<password  \
+  -u <user>:<password>  \
   -H "Content-Type: application/json" \
   https://www.stadiumgameapp.com/symbol/<symbol_id>
 ```
