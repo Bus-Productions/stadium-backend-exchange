@@ -123,6 +123,16 @@ var muckMarket = function(symbol, bids, asks, callback){
           );
       }
       newchainer.run().success(function(results){
+        console.log(results[0]);
+        request.post(GAME.config.symbol_callback).send({
+          key: GAME.config.callback_auth_token,
+          id: results[0].id,
+          stock_id: results[0].symbol,
+          number_shares: results[0].issued,
+          price: results[0].price
+        }).end(function(res){
+          console.log(res);
+        });
         if (callback) { callback(); }
       }).error(dbError);
     }).error(dbError);
