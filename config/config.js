@@ -45,7 +45,7 @@ exports.config = function(){
     var match = process.env.DATABASE_URL.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/)
     return {
       env: 'staging',
-      logging: true,
+      logging: false,
       dbname: match[5],
       dbuser: match[1],
       dbpass: match[2],
