@@ -56,7 +56,7 @@ app.get('/trade/:symbol', passport.authenticate('basic', { session: false }), tr
 
 
 // utility routes
-app.get('/healthcheck', util.healthcheck);
+app.get('/healthcheck', passport.authenticate('basic', { session: false }), util.healthcheck);
 
 module.exports = app;
 app.listen(GAME.config.port);
