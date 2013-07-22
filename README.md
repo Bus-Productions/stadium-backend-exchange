@@ -129,11 +129,14 @@ Your response will be:
 ###Trades
 Trades happen after a bid or ask is entered. You can only `GET` a trade from the trade book
 
-```
+```shell
 curl -i -X GET \
   -u <user>:<password>  \
   -H "Content-Type: application/json" \
-  https://www.stadiumgameapp.com/trade
+  https://www.stadiumgameapp.com/trade/<symbol_name>
 ```
 
+Your response will look like:
+```json
+```
 
