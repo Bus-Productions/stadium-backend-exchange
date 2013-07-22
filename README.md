@@ -83,7 +83,8 @@ curl -i -X POST \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price_ordered":100,"price_actual":100,"quantity":100,"seller":"Mr White","order_placed_at":"2013-07-22T22:03:24.000Z","price_affecting":true,"matched":false,"id":3,"createdAt":"2013-07-22T22:03:24.000Z","updatedAt":"2013-07-22T22:03:24.000Z","deletedAt":null}
 ```
 
 
@@ -95,7 +96,8 @@ curl -i -X GET \
 ```
 
 Your response will be:
-```
+```json
+{"symbol":"XYZ","price_ordered":100,"price_actual":100,"quantity":100,"seller":"Mr White","order_placed_at":"2013-07-22T21:59:04.000Z","price_affecting":true,"matched":true,"id":2,"createdAt":"2013-07-22T21:59:04.000Z","updatedAt":"2013-07-22T21:59:07.000Z","deletedAt":null}
 ```
 
 ###Symbols
@@ -138,5 +140,6 @@ curl -i -X GET \
 
 Your response will look like:
 ```json
+[{"symbol":"XYZ","price":200,"quantity":100,"buyer":"Mr White","bid":"1","seller":"StadiumEX","ask":"1","id":1,"createdAt":"2013-07-22T21:49:47.000Z","updatedAt":"2013-07-22T21:49:47.000Z","deletedAt":null},{"symbol":"XYZ","price":100,"quantity":100,"buyer":"StadiumEX","bid":"2","seller":"Mr White","ask":"2","id":2,"createdAt":"2013-07-22T21:59:07.000Z","updatedAt":"2013-07-22T21:59:07.000Z","deletedAt":null},{"symbol":"XYZ","price":0,"quantity":100,"buyer":"StadiumEX","bid":"3","seller":"Mr White","ask":"3","id":3,"createdAt":"2013-07-22T22:03:26.000Z","updatedAt":"2013-07-22T22:03:26.000Z","deletedAt":null}]
 ```
 
