@@ -131,7 +131,7 @@ var muckMarket = function(symbol, bids, asks, callback){
           number_shares: results[0].issued,
           price: results[0].price
         }).end(function(res){
-          console.log(res);
+          //console.log(res);
         });
         if (callback) { callback(); }
       }).error(dbError);
@@ -249,7 +249,7 @@ var createTrade = function(bid, ask, callback){
           ask: trade.ask,
           time: trade.created_at
         }).end(function(res){
-          console.log(res);
+          //console.log(res);
         });
         if (callback){ callback(); }
       });
