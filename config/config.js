@@ -18,6 +18,7 @@ exports.config = function(){
       tick_speed: 3000,
       trade_callback: 'https://www.stadiumse.com/game_api/trade',
       symbol_callback: 'https://www.stadiumse.com/game_api/symbol',
+      callback_auth_token: 'foeauheo23972y39r81h23olir1h1933977',
       host: 'localhost',
       port: 4200,
       method: 'POST'
@@ -37,6 +38,7 @@ exports.config = function(){
       tick_speed: 3000,
       trade_callback: 'https://www.stadiumse.com/game_api/trade',
       symbol_callback: 'https://www.stadiumse.com/game_api/symbol',
+      callback_auth_token: 'foeauheo23972y39r81h23olir1h1933977',
       host: 'localhost',
       port: 3000,
       method: 'POST'
@@ -57,6 +59,7 @@ exports.config = function(){
       tick_speed: 3000,
       trade_callback: 'https://www.stadiumse.com/game_api/trade',
       symbol_callback: 'https://www.stadiumse.com/game_api/symbol',
+      callback_auth_token: 'foeauheo23972y39r81h23olir1h1933977',
       host: 'localhost',
       port: process.env.PORT,
       method: 'POST'
@@ -76,6 +79,7 @@ exports.config = function(){
       tick_speed: 3000,
       trade_callback: 'https://www.stadiumse.com/game_api/trade',
       symbol_callback: 'https://www.stadiumse.com/game_api/symbol',
+      callback_auth_token: 'foeauheo23972y39r81h23olir1h1933977',
       host: 'some.com',
       port: process.env.PORT,
       method: 'POST'
