@@ -20,6 +20,7 @@ describe("Index", function() {
 
   it('has a healthcheck', function(done) {
     request(app).get('/healthcheck')
+      .auth(USER, PASS)
       .expect(200, done);
   });
 });

@@ -1,7 +1,7 @@
 var should  = require('chai').should(),
     nock    = require('nock'),
     helpers = require('./utils/helpers.js'),
-    tick = require('../tick');
+    tick = require('../lib/tick');
     request = require('supertest');
 
 nock.disableNetConnect();
